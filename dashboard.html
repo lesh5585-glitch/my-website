@@ -542,12 +542,68 @@
 
 
     <!-- PLACEHOLDERS -->
-    <section id="albums" class="section">
-      <h1>Albums / <span class="gold">EPs</span></h1>
-      <div class="form-box">
-        <p class="muted">Album and EP management will be connected next.</p>
+<section id="albums" class="section">
+
+  <h1>Albums / <span class="gold">EPs</span></h1>
+
+  <div class="form-box">
+
+    <h2 id="albumFormTitle">Create Album / EP</h2>
+
+    <input type="hidden" id="albumId">
+
+    <div class="form-grid">
+
+      <div>
+        <label>Title</label>
+        <input id="albumTitle" type="text" placeholder="Album or EP title">
       </div>
-    </section>
+
+      <div>
+        <label>Artist</label>
+        <select id="albumArtist">
+          <option value="">Select artist</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Type</label>
+        <select id="albumType">
+          <option value="album">Album</option>
+          <option value="ep">EP</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Release Date</label>
+        <input id="albumReleaseDate" type="date">
+      </div>
+
+      <div class="full">
+        <label>Description</label>
+        <textarea id="albumDescription"
+          placeholder="Describe this album or EP"></textarea>
+      </div>
+
+      <div class="full">
+        <label>Cover Art</label>
+        <input id="albumCover" type="file" accept="image/*">
+      </div>
+
+    </div>
+
+    <div class="actions">
+      <button class="primary" onclick="saveAlbum()">Save Album / EP</button>
+      <button class="secondary" onclick="resetAlbumForm()">Clear</button>
+    </div>
+
+    <div id="albumStatus" class="status"></div>
+
+  </div>
+
+  <div id="albumList" class="song-grid"></div>
+
+</section>
 
     <section id="news" class="section">
       <h1>News</h1>
@@ -1017,14 +1073,355 @@ async function loadAlbums() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    albums = [];
+
+    showStatus(
+      "albumStatus",
+      "Error loading albums: " + error.message,
+      "error"
+    );
+
     return;
   }
 
   albums = data || [];
 
   populateAlbumSelect();
+  populateAlbumArtistSelect();
+  renderAlbums();
+
 }
+
+function populateAlbumArtistSelect() {
+
+  const select = document.getElementById("albumArtist");
+
+  select.innerHTML =
+    '<option value="">Select artist</option>';
+
+  artists.forEach(artist => {
+
+    const option = document.createElement("option");
+
+    option.value = artist.id;
+    option.textContent = artist.name;
+
+    select.appendChild(option);
+
+  });
+
+}
+
+
+function renderAlbums() {
+
+  const container =
+    document.getElementById("albumList");
+
+  container.innerHTML = "";
+
+  albums.forEach(album => {
+
+    const artist =
+      artists.find(a => a.id === album.artist_id);
+
+    const artistName =
+      artist ? artist.name : "Unknown Artist";
+
+    const cover =
+      album.cover_url ||
+      "https://via.placeholder.com/500x500?text=Album";
+
+    const type =
+      album.type === "ep" ? "EP" : "Album";
+
+    const card =
+      document.createElement("div");
+
+    card.className = "song-card";
+
+    card.innerHTML = `
+
+      <img
+        class="song-cover"
+        src="${cover}"
+        alt="${escapeHtml(album.title)}">
+
+      <div class="song-info">
+
+        <h3>${escapeHtml(album.title)}</h3>
+
+        <div class="muted">
+          ${escapeHtml(artistName)}
+        </div>
+
+        <div class="muted">
+          ${type}
+        </div>
+
+        <div class="muted">
+          ${album.release_date || "Release date not set"}
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="secondary"
+            onclick="editAlbum('${album.id}')">
+            Edit
+          </button>
+
+          <button
+            class="danger"
+            onclick="deleteAlbum('${album.id}')">
+            Delete
+          </button>
+
+        </div>
+
+      </div>
+    `;
+
+    container.appendChild(card);
+
+  });
+
+}
+
+
+async function saveAlbum() {
+
+  const id =
+    document.getElementById("albumId").value;
+
+  const title =
+    document.getElementById("albumTitle").value.trim();
+
+  const artistId =
+    document.getElementById("albumArtist").value;
+
+  const type =
+    document.getElementById("albumType").value;
+
+  const releaseDate =
+    document.getElementById("albumReleaseDate").value || null;
+
+  const description =
+    document.getElementById("albumDescription").value.trim();
+
+  if (!title) {
+
+    showStatus(
+      "albumStatus",
+      "Album/EP title is required.",
+      "error"
+    );
+
+    return;
+  }
+
+  if (!artistId) {
+
+    showStatus(
+      "albumStatus",
+      "Please select an artist.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  let coverUrl = null;
+
+  if (id) {
+
+    const existing =
+      albums.find(a => a.id === id);
+
+    if (existing) {
+      coverUrl = existing.cover_url;
+    }
+
+  }
+
+
+  const coverFile =
+    document.getElementById("albumCover").files[0];
+
+  if (coverFile) {
+
+    const fileName =
+      Date.now() + "-" +
+      coverFile.name.replace(/\s+/g, "-");
+
+    const { error } =
+      await client.storage
+        .from("covers")
+        .upload(fileName, coverFile);
+
+    if (error) {
+
+      showStatus(
+        "albumStatus",
+        "Cover upload failed: " + error.message,
+        "error"
+      );
+
+      return;
+    }
+
+    const { data } =
+      client.storage
+        .from("covers")
+        .getPublicUrl(fileName);
+
+    coverUrl = data.publicUrl;
+
+  }
+
+
+  const payload = {
+
+    title,
+    slug: makeSlug(title),
+    artist_id: artistId,
+    type,
+    description,
+    release_date: releaseDate
+
+  };
+
+
+  if (coverUrl) {
+    payload.cover_url = coverUrl;
+  }
+
+
+  let result;
+
+  if (id) {
+
+    result = await client
+      .from("albums")
+      .update(payload)
+      .eq("id", id);
+
+  } else {
+
+    result = await client
+      .from("albums")
+      .insert(payload);
+
+  }
+
+
+  if (result.error) {
+
+    showStatus(
+      "albumStatus",
+      result.error.message,
+      "error"
+    );
+
+    return;
+  }
+
+
+  showStatus(
+    "albumStatus",
+    id
+      ? "Album/EP updated successfully."
+      : "Album/EP created successfully.",
+    "success"
+  );
+
+
+  resetAlbumForm();
+
+  await loadAlbums();
+  await loadCounts();
+
+}
+
+
+function editAlbum(id) {
+
+  const album =
+    albums.find(a => a.id === id);
+
+  if (!album) return;
+
+  document.getElementById("albumId").value =
+    album.id;
+
+  document.getElementById("albumTitle").value =
+    album.title || "";
+
+  document.getElementById("albumArtist").value =
+    album.artist_id || "";
+
+  document.getElementById("albumType").value =
+    album.type || "album";
+
+  document.getElementById("albumReleaseDate").value =
+    album.release_date || "";
+
+  document.getElementById("albumDescription").value =
+    album.description || "";
+
+  document.getElementById("albumFormTitle").textContent =
+    "Edit Album / EP";
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+async function deleteAlbum(id) {
+
+  if (!confirm("Delete this album/EP?")) return;
+
+  const { error } =
+    await client
+      .from("albums")
+      .delete()
+      .eq("id", id);
+
+  if (error) {
+
+    alert(error.message);
+    return;
+  }
+
+  await loadAlbums();
+  await loadCounts();
+
+}
+
+
+function resetAlbumForm() {
+
+  document.getElementById("albumId").value = "";
+
+  document.getElementById("albumTitle").value = "";
+
+  document.getElementById("albumArtist").value = "";
+
+  document.getElementById("albumType").value = "album";
+
+  document.getElementById("albumReleaseDate").value = "";
+
+  document.getElementById("albumDescription").value = "";
+
+  document.getElementById("albumCover").value = "";
+
+  document.getElementById("albumFormTitle").textContent =
+    "Create Album / EP";
+
+}  
 
 
 function populateAlbumSelect() {
