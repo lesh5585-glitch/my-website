@@ -695,15 +695,15 @@ function showSection(id, button) {
 
 async function loadEverything() {
 
-  await Promise.all([
-    loadArtists(),
-    loadSongs(),
-    loadAlbums(),
-    loadCounts()
-  ]);
+  await loadArtists();
+
+  await loadAlbums();
+
+  await loadSongs();
+
+  await loadCounts();
 
 }
-
 
 /* COUNTS */
 
