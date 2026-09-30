@@ -109,5 +109,40 @@ footer{padding:35px 7%;border-top:1px solid #222;color:#777;font-size:13px}
 
 <footer>© 2026 Leshky Records • Sound to Legacy • Makurdi, Nigeria</footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://dcjeqalpzuewlholdbqc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_LZkkwMKMxbEMi3hKY-op4g_gHSQO529";
+
+const { createClient } = supabase;
+const client = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function loadMusic() {
+
+  const { data: songs, error } = await client
+    .from("songs")
+    .select(`
+      *,
+      artists (
+        name
+      ),
+      albums (
+        title,
+        type
+      )
+    `)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error loading songs:", error);
+    return;
+  }
+
+  console.log("Songs loaded:", songs);
+}
+
+loadMusic();
+</script>  
 </body>
 </html>
