@@ -92,7 +92,9 @@ artists.forEach(artist => {
     text-align:center;
   `;
 
-  const photo = artist.photo_url ||
+  const photo = artist.photo_url;
+  
+  console.log("Artist photo URL:", artist.name, artist.photo_url);
     "https://via.placeholder.com/500x500?text=Artist";
 
   card.innerHTML = `
