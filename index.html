@@ -1193,7 +1193,7 @@ const SUPABASE_URL = "https://dcjeqalpzuewlholdbqc.supabase.co";
 const SUPABASE_KEY = "sb_publishable_LZkkwMKMxbEMi3hKY-op4g_gHSQO529";
 
 const { createClient } = supabase;
-const client = createClient(SUPABASE_URL, SUPABASE_KEY);
+const client = createClient(https://dcjeqalpzuewlholdbqc.supabase.co, sb_publishable_LZkkwMKMxbEMi3hKY-op4g_gHSQO529);
 
 async function loadFeaturedMusic() {
 
@@ -1219,6 +1219,65 @@ async function loadFeaturedMusic() {
   }
 
   console.log("Featured music loaded:", songs);
+
+  const featuredContainer =
+  document.getElementById("featuredMusic");
+
+featuredContainer.innerHTML = "";
+
+songs.forEach(song => {
+
+  const card = document.createElement("div");
+
+  card.style.cssText = `
+    background:#111;
+    border:1px solid #333;
+    padding:20px;
+    border-radius:12px;
+  `;
+
+  const cover =
+    song.cover_url ||
+    "https://via.placeholder.com/500x500?text=Leshky+Records";
+
+  const artistName =
+    song.artists?.name || "Unknown Artist";
+
+  const albumName =
+    song.albums?.title || "Single";
+
+  card.innerHTML = `
+    <img
+      src="${cover}"
+      alt="${song.title}"
+      style="
+        width:100%;
+        aspect-ratio:1;
+        object-fit:cover;
+        border-radius:10px;
+      "
+    >
+
+    <h3 style="margin:15px 0 5px;">
+      ${song.title}
+    </h3>
+
+    <p>${artistName}</p>
+
+    <p style="opacity:.7;">
+      ${albumName}
+    </p>
+
+    <audio
+      controls
+      style="width:100%;"
+      src="${song.audio_url}">
+    </audio>
+  `;
+
+  featuredContainer.appendChild(card);
+
+});  
 }
 
 loadFeaturedMusic();
