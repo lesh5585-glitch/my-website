@@ -1973,6 +1973,343 @@ function escapeHtml(text) {
 
 checkAuth();
 
+// ===============================
+// NEWS MANAGER
+// ===============================
+
+let news = [];
+
+async function loadNews() {
+
+  const { data, error } = await client
+    .from("news")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+
+    showStatus(
+      "newsStatus",
+      "Error loading news: " + error.message,
+      "error"
+    );
+
+    return;
+  }
+
+  news = data || [];
+
+  renderNews();
+}
+
+
+function renderNews() {
+
+  const container = document.getElementById("newsList");
+
+  if (!container) return;
+
+  if (news.length === 0) {
+
+    container.innerHTML = "<p>No news articles yet.</p>";
+
+    return;
+  }
+
+  container.innerHTML = "";
+
+  news.forEach(article => {
+
+    const card = document.createElement("div");
+
+    card.style.cssText = `
+      border:1px solid #333;
+      padding:20px;
+      margin-bottom:15px;
+      border-radius:10px;
+      background:#111;
+    `;
+
+    card.innerHTML = `
+
+      <h3>${article.title}</h3>
+
+      <p>
+        ${article.excerpt || ""}
+      </p>
+
+      <small>
+        ${article.author || "Leshky Records"}
+      </small>
+
+      <br><br>
+
+      <button onclick="editNews('${article.id}')">
+        Edit
+      </button>
+
+      <button onclick="deleteNews('${article.id}')">
+        Delete
+      </button>
+
+    `;
+
+    container.appendChild(card);
+
+  });
+}
+
+
+document
+  .getElementById("newsForm")
+  ?.addEventListener("submit", saveNews);
+
+
+async function saveNews(event) {
+
+  event.preventDefault();
+
+  const id =
+    document.getElementById("newsId").value;
+
+  const title =
+    document.getElementById("newsTitle").value.trim();
+
+  const author =
+    document.getElementById("newsAuthor").value.trim();
+
+  const publishedAt =
+    document.getElementById("newsPublishedAt").value;
+
+  const excerpt =
+    document.getElementById("newsExcerpt").value.trim();
+
+  const content =
+    document.getElementById("newsContent").value.trim();
+
+  const imageFile =
+    document.getElementById("newsImage").files[0];
+
+  if (!title || !content) {
+
+    showStatus(
+      "newsStatus",
+      "Title and content are required.",
+      "error"
+    );
+
+    return;
+  }
+
+  let imageUrl = null;
+
+  // Upload image if selected
+  if (imageFile) {
+
+    const fileName =
+      Date.now() + "-" + imageFile.name;
+
+    const { error: uploadError } =
+      await client.storage
+        .from("gallery")
+        .upload(fileName, imageFile);
+
+    if (uploadError) {
+
+      showStatus(
+        "newsStatus",
+        "Image upload failed: " +
+        uploadError.message,
+        "error"
+      );
+
+      return;
+    }
+
+    const { data: publicUrlData } =
+      client.storage
+        .from("gallery")
+        .getPublicUrl(fileName);
+
+    imageUrl =
+      publicUrlData.publicUrl;
+  }
+
+
+  const slug =
+    title
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+
+  const newsData = {
+
+    title: title,
+
+    slug: slug,
+
+    excerpt: excerpt,
+
+    content: content,
+
+    author:
+      author || "Leshky Records",
+
+    published_at:
+      publishedAt || new Date().toISOString()
+
+  };
+
+
+  if (imageUrl) {
+
+    newsData.image_url = imageUrl;
+
+  }
+
+
+  let result;
+
+
+  if (id) {
+
+    result =
+      await client
+        .from("news")
+        .update(newsData)
+        .eq("id", id);
+
+  } else {
+
+    result =
+      await client
+        .from("news")
+        .insert([newsData]);
+
+  }
+
+
+  if (result.error) {
+
+    showStatus(
+      "newsStatus",
+      "Error saving news: " +
+      result.error.message,
+      "error"
+    );
+
+    return;
+  }
+
+
+  showStatus(
+    "newsStatus",
+    "News saved successfully!",
+    "success"
+  );
+
+
+  resetNewsForm();
+
+  await loadNews();
+
+}
+
+
+function editNews(id) {
+
+  const article =
+    news.find(item => item.id === id);
+
+  if (!article) return;
+
+
+  document.getElementById("newsId").value =
+    article.id;
+
+  document.getElementById("newsTitle").value =
+    article.title || "";
+
+  document.getElementById("newsAuthor").value =
+    article.author || "";
+
+  document.getElementById("newsExcerpt").value =
+    article.excerpt || "";
+
+  document.getElementById("newsContent").value =
+    article.content || "";
+
+
+  if (article.published_at) {
+
+    document.getElementById("newsPublishedAt").value =
+      new Date(article.published_at)
+        .toISOString()
+        .slice(0, 16);
+
+  }
+
+}
+
+
+async function deleteNews(id) {
+
+  if (!confirm("Delete this news article?")) {
+
+    return;
+
+  }
+
+
+  const { error } =
+    await client
+      .from("news")
+      .delete()
+      .eq("id", id);
+
+
+  if (error) {
+
+    showStatus(
+      "newsStatus",
+      "Error deleting news: " +
+      error.message,
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  showStatus(
+    "newsStatus",
+    "News deleted successfully.",
+    "success"
+  );
+
+
+  await loadNews();
+
+}
+
+
+function resetNewsForm() {
+
+  document
+    .getElementById("newsForm")
+    ?.reset();
+
+  document.getElementById("newsId").value = "";
+
+}
+
+
+// Load news when dashboard loads
+loadNews();
+  
 </script>
 
 </body>
