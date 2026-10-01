@@ -605,13 +605,92 @@
 
 </section>
 
-    <section id="news" class="section">
-      <h1>News</h1>
-      <div class="form-box">
-        <p class="muted">News management will be connected next.</p>
-      </div>
-    </section>
+<section id="news" class="section">
 
+  <h2>News Management</h2>
+
+  <div class="card">
+
+    <h3>Add News</h3>
+
+    <form id="newsForm">
+
+      <input
+        type="hidden"
+        id="newsId"
+      >
+
+      <label>Title</label>
+      <input
+        type="text"
+        id="newsTitle"
+        placeholder="News title"
+        required
+      >
+
+      <label>Author</label>
+      <input
+        type="text"
+        id="newsAuthor"
+        placeholder="Author name"
+      >
+
+      <label>Published Date</label>
+      <input
+        type="datetime-local"
+        id="newsPublishedAt"
+      >
+
+      <label>Excerpt</label>
+      <textarea
+        id="newsExcerpt"
+        placeholder="Short description of the news"
+        rows="3"
+      ></textarea>
+
+      <label>Content</label>
+      <textarea
+        id="newsContent"
+        placeholder="Full news content"
+        rows="8"
+        required
+      ></textarea>
+
+      <label>News Image</label>
+      <input
+        type="file"
+        id="newsImage"
+        accept="image/*"
+      >
+
+      <button type="submit">
+        Save News
+      </button>
+
+      <button
+        type="button"
+        onclick="resetNewsForm()"
+      >
+        Clear
+      </button>
+
+    </form>
+
+    <p id="newsStatus"></p>
+
+  </div>
+
+  <div class="card">
+
+    <h3>News Articles</h3>
+
+    <div id="newsList">
+      Loading news...
+    </div>
+
+  </div>
+
+</section>
     <section id="events" class="section">
       <h1>Events</h1>
       <div class="form-box">
