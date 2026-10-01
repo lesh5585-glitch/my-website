@@ -64,3 +64,67 @@ footer{padding:35px 7%;border-top:1px solid #222;color:#777}
 </section>
 
 <footer>© 2026 Lesh
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://dcjeqalpzuewlholdbqc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_LZkkwMKMxbEMi3hKY-op4g_gHSQO529";
+
+const { createClient } = supabase;
+const client = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function loadNews() {
+
+  const { data: news, error } = await client
+    .from("news")
+    .select("*")
+    .order("published_at", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const container = document.getElementById("supabaseNews");
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  news.forEach(article => {
+
+    const card = document.createElement("div");
+
+    card.style.cssText = `
+      background:#111;
+      border:1px solid #333;
+      padding:20px;
+      border-radius:12px;
+    `;
+
+    card.innerHTML = `
+      ${
+        article.image_url
+          ? `<img
+              src="${article.image_url}"
+              style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;"
+            >`
+          : ""
+      }
+
+      <h3>${article.title}</h3>
+
+      <p>${article.excerpt || ""}</p>
+
+      <p>${article.content || ""}</p>
+
+      <small>${article.author || "Leshky Records"}</small>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+loadNews();
+</script>  
