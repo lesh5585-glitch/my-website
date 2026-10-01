@@ -1186,6 +1186,44 @@
         }
     </script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://dcjeqalpzuewlholdbqc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_LZkkwMKMxbEMi3hKY-op4g_gHSQO529";
+
+const { createClient } = supabase;
+const client = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function loadFeaturedMusic() {
+
+  const { data: songs, error } = await client
+    .from("songs")
+    .select(`
+      *,
+      artists (
+        name
+      ),
+      albums (
+        title,
+        type
+      )
+    `)
+    .eq("featured", true)
+    .order("created_at", { ascending: false })
+    .limit(6);
+
+  if (error) {
+    console.error("Error loading featured music:", error);
+    return;
+  }
+
+  console.log("Featured music loaded:", songs);
+}
+
+loadFeaturedMusic();
+</script>    
+    
 </body>
 </html>
 ```
