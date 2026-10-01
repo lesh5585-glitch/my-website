@@ -75,10 +75,77 @@ async function loadArtists() {
   }
 
   console.log("Artists loaded:", artists);
+
+  const container = document.getElementById("supabaseArtists");
+
+container.innerHTML = "";
+
+artists.forEach(artist => {
+
+  const card = document.createElement("div");
+
+  card.style.cssText = `
+    background:#111;
+    border:1px solid #333;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+  `;
+
+  const photo = artist.photo_url ||
+    "https://via.placeholder.com/500x500?text=Artist";
+
+  card.innerHTML = `
+    <img
+      src="${photo}"
+      alt="${artist.name}"
+      style="
+        width:100%;
+        aspect-ratio:1;
+        object-fit:cover;
+        border-radius:10px;
+      "
+    >
+
+    <h3 style="margin:15px 0 5px;">
+      ${artist.name}
+    </h3>
+
+    <p style="opacity:.7;">
+      ${artist.genre || "Artist"}
+    </p>
+
+    <p>
+      ${artist.bio || ""}
+    </p>
+  `;
+
+  container.appendChild(card);
+
+});
 }
 
 loadArtists();
-</script>  
+</script> 
+
+<section style="padding:60px 20px;">
+
+  <h2 style="text-align:center;">
+    Our <span style="color:#d4af37;">Artists</span>
+  </h2>
+
+  <div
+    id="supabaseArtists"
+    style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:25px;
+      max-width:1100px;
+      margin:30px auto;
+    ">
+  </div>
+
+</section>  
   
 </body>
 </html>
