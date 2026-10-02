@@ -780,18 +780,84 @@
 </section>
 
     <section id="media" class="section">
-      <h1>Media</h1>
-      <div class="form-box">
-        <p class="muted">Media management will be connected next.</p>
-      </div>
-    </section>
 
-    <section id="settings" class="section">
-      <h1>Settings</h1>
-      <div class="form-box">
-        <p class="muted">Site settings will be connected next.</p>
-      </div>
-    </section>
+  <h2>Media Management</h2>
+
+  <div class="card">
+
+    <h3>Add Media</h3>
+
+    <form id="mediaForm">
+
+      <input
+        type="hidden"
+        id="mediaId"
+      >
+
+      <label>Title</label>
+      <input
+        type="text"
+        id="mediaTitle"
+        placeholder="Media title"
+        required
+      >
+
+      <label>Media Type</label>
+      <select id="mediaType">
+
+        <option value="image">
+          Image
+        </option>
+
+        <option value="video">
+          Video
+        </option>
+
+      </select>
+
+      <label>File</label>
+      <input
+        type="file"
+        id="mediaFile"
+        accept="image/*,video/*"
+        required
+      >
+
+      <label>Description</label>
+      <textarea
+        id="mediaDescription"
+        placeholder="Description"
+        rows="4"
+      ></textarea>
+
+      <button type="submit">
+        Save Media
+      </button>
+
+      <button
+        type="button"
+        onclick="resetMediaForm()"
+      >
+        Clear
+      </button>
+
+    </form>
+
+    <p id="mediaStatus"></p>
+
+  </div>
+
+  <div class="card">
+
+    <h3>Media Library</h3>
+
+    <div id="mediaList">
+      Loading media...
+    </div>
+
+  </div>
+
+</section>
 
   </main>
 </div>
