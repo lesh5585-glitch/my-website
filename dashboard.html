@@ -2850,3 +2850,399 @@ function resetEventForm() {
 loadEvents();
 
 </script>
+
+<script>
+
+// ===============================
+// MEDIA MANAGER
+// ===============================
+
+let media = [];
+
+async function loadMedia() {
+
+  const { data, error } = await client
+    .from("media")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+
+    showStatus(
+      "mediaStatus",
+      "Error loading media: " + error.message,
+      "error"
+    );
+
+    return;
+  }
+
+  media = data || [];
+
+  renderMedia();
+}
+
+
+function renderMedia() {
+
+  const container =
+    document.getElementById("mediaList");
+
+  if (!container) return;
+
+  if (media.length === 0) {
+
+    container.innerHTML =
+      "<p>No media uploaded yet.</p>";
+
+    return;
+  }
+
+  container.innerHTML = "";
+
+  media.forEach(item => {
+
+    const card =
+      document.createElement("div");
+
+    card.style.cssText = `
+      border:1px solid #333;
+      padding:20px;
+      margin-bottom:15px;
+      border-radius:10px;
+      background:#111;
+    `;
+
+    let preview = "";
+
+    if (item.type === "image") {
+
+      preview = `
+        <img
+          src="${item.file_url}"
+          alt="${item.title}"
+          style="
+            width:100%;
+            max-width:350px;
+            height:220px;
+            object-fit:cover;
+            border-radius:10px;
+            margin-bottom:15px;
+          "
+        >
+      `;
+
+    } else if (item.type === "video") {
+
+      preview = `
+        <video
+          controls
+          style="
+            width:100%;
+            max-width:500px;
+            border-radius:10px;
+            margin-bottom:15px;
+          "
+        >
+          <source
+            src="${item.file_url}"
+            type="video/mp4"
+          >
+          Your browser does not support video playback.
+        </video>
+      `;
+
+    }
+
+    card.innerHTML = `
+
+      ${preview}
+
+      <h3>${item.title}</h3>
+
+      <p>
+        Type: ${item.type}
+      </p>
+
+      <p>
+        ${item.description || ""}
+      </p>
+
+      <button
+        onclick="editMedia('${item.id}')">
+        Edit
+      </button>
+
+      <button
+        onclick="deleteMedia('${item.id}')">
+        Delete
+      </button>
+
+    `;
+
+    container.appendChild(card);
+
+  });
+}
+
+
+document
+  .getElementById("mediaForm")
+  ?.addEventListener(
+    "submit",
+    saveMedia
+  );
+
+
+async function saveMedia(event) {
+
+  event.preventDefault();
+
+  const id =
+    document.getElementById("mediaId").value;
+
+  const title =
+    document
+      .getElementById("mediaTitle")
+      .value
+      .trim();
+
+  const type =
+    document
+      .getElementById("mediaType")
+      .value;
+
+  const description =
+    document
+      .getElementById("mediaDescription")
+      .value
+      .trim();
+
+  const file =
+    document
+      .getElementById("mediaFile")
+      .files[0];
+
+
+  if (!title) {
+
+    showStatus(
+      "mediaStatus",
+      "Media title is required.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if (!id && !file) {
+
+    showStatus(
+      "mediaStatus",
+      "Please select a file.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  let fileUrl = null;
+
+
+  if (file) {
+
+    const bucket =
+      type === "video"
+        ? "videos"
+        : "gallery";
+
+
+    const fileName =
+      Date.now() + "-" + file.name;
+
+
+    const { error: uploadError } =
+      await client.storage
+        .from(bucket)
+        .upload(
+          fileName,
+          file
+        );
+
+
+    if (uploadError) {
+
+      showStatus(
+        "mediaStatus",
+        "File upload failed: " +
+        uploadError.message,
+        "error"
+      );
+
+      return;
+    }
+
+
+    const { data: publicUrlData } =
+      client.storage
+        .from(bucket)
+        .getPublicUrl(fileName);
+
+
+    fileUrl =
+      publicUrlData.publicUrl;
+
+  }
+
+
+  const mediaData = {
+
+    title,
+
+    type,
+
+    description
+
+  };
+
+
+  if (fileUrl) {
+
+    mediaData.file_url =
+      fileUrl;
+
+  }
+
+
+  let result;
+
+
+  if (id) {
+
+    result =
+      await client
+        .from("media")
+        .update(mediaData)
+        .eq("id", id);
+
+  } else {
+
+    result =
+      await client
+        .from("media")
+        .insert([mediaData]);
+
+  }
+
+
+  if (result.error) {
+
+    showStatus(
+      "mediaStatus",
+      "Error saving media: " +
+      result.error.message,
+      "error"
+    );
+
+    return;
+  }
+
+
+  showStatus(
+    "mediaStatus",
+    "Media saved successfully!",
+    "success"
+  );
+
+
+  resetMediaForm();
+
+  await loadMedia();
+
+}
+
+
+function editMedia(id) {
+
+  const item =
+    media.find(item => item.id === id);
+
+  if (!item) return;
+
+
+  document.getElementById("mediaId").value =
+    item.id;
+
+  document.getElementById("mediaTitle").value =
+    item.title || "";
+
+  document.getElementById("mediaType").value =
+    item.type || "image";
+
+  document.getElementById("mediaDescription").value =
+    item.description || "";
+
+}
+
+
+async function deleteMedia(id) {
+
+  if (
+    !confirm(
+      "Delete this media item?"
+    )
+  ) {
+    return;
+  }
+
+
+  const { error } =
+    await client
+      .from("media")
+      .delete()
+      .eq("id", id);
+
+
+  if (error) {
+
+    showStatus(
+      "mediaStatus",
+      "Error deleting media: " +
+      error.message,
+      "error"
+    );
+
+    return;
+  }
+
+
+  showStatus(
+    "mediaStatus",
+    "Media deleted successfully.",
+    "success"
+  );
+
+
+  await loadMedia();
+
+}
+
+
+function resetMediaForm() {
+
+  document
+    .getElementById("mediaForm")
+    ?.reset();
+
+  document
+    .getElementById("mediaId")
+    .value = "";
+
+}
+
+
+loadMedia();
+
+</script>
