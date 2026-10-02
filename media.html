@@ -45,6 +45,128 @@ footer{padding:35px 7%;border-top:1px solid #222;color:#777}
 </div>
 </section>
 
+<section style="padding:60px 20px;">
+
+  <h2 style="text-align:center;">
+    Leshky <span style="color:#d4af37;">Media</span>
+  </h2>
+
+  <div
+    id="supabaseMedia"
+    style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:25px;
+      max-width:1100px;
+      margin:30px auto;
+    ">
+  </div>
+
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://dcjeqalpzuewlholdbqc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_LZkkwMKMxbEMi3hKY-op4g_gHSQO529";
+
+const { createClient } = supabase;
+const client = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function loadMedia() {
+
+  const { data: media, error } = await client
+    .from("media")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error loading media:", error);
+    return;
+  }
+
+  const container =
+    document.getElementById("supabaseMedia");
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  media.forEach(item => {
+
+    const card =
+      document.createElement("article");
+
+    card.style.cssText = `
+      background:#111;
+      border:1px solid #333;
+      padding:20px;
+      border-radius:12px;
+    `;
+
+    let mediaContent = "";
+
+    if (item.type === "image") {
+
+      mediaContent = `
+        <img
+          src="${item.file_url}"
+          alt="${item.title}"
+          style="
+            width:100%;
+            aspect-ratio:16/9;
+            object-fit:cover;
+            border-radius:10px;
+            margin-bottom:15px;
+          "
+        >
+      `;
+
+    } else if (item.type === "video") {
+
+      mediaContent = `
+        <video
+          controls
+          style="
+            width:100%;
+            border-radius:10px;
+            margin-bottom:15px;
+          "
+        >
+          <source
+            src="${item.file_url}"
+            type="video/mp4"
+          >
+          Your browser does not support video playback.
+        </video>
+      `;
+
+    }
+
+    card.innerHTML = `
+
+      ${mediaContent}
+
+      <h3>${item.title}</h3>
+
+      <p style="opacity:.7;">
+        ${item.type}
+      </p>
+
+      <p>
+        ${item.description || ""}
+      </p>
+
+    `;
+
+    container.appendChild(card);
+
+  });
+}
+
+loadMedia();
+</script>
+
 <footer>© 2026 Leshky Records • Sound to Legacy</footer>
 </body>
 </html>
