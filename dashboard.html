@@ -690,13 +690,92 @@
 
   </div>
 
+<section id="events" class="section">
+
+  <h2>Events Management</h2>
+
+  <div class="card">
+
+    <h3>Add Event</h3>
+
+    <form id="eventForm">
+
+      <input
+        type="hidden"
+        id="eventId"
+      >
+
+      <label>Event Title</label>
+      <input
+        type="text"
+        id="eventTitle"
+        placeholder="Event title"
+        required
+      >
+
+      <label>Description</label>
+      <textarea
+        id="eventDescription"
+        placeholder="Event description"
+        rows="5"
+      ></textarea>
+
+      <label>Location</label>
+      <input
+        type="text"
+        id="eventLocation"
+        placeholder="Event location"
+      >
+
+      <label>Event Date</label>
+      <input
+        type="datetime-local"
+        id="eventDate"
+        required
+      >
+
+      <label>Event Image</label>
+      <input
+        type="file"
+        id="eventImage"
+        accept="image/*"
+      >
+
+      <label>Ticket / Event Link</label>
+      <input
+        type="url"
+        id="eventTicketUrl"
+        placeholder="https://..."
+      >
+
+      <button type="submit">
+        Save Event
+      </button>
+
+      <button
+        type="button"
+        onclick="resetEventForm()"
+      >
+        Clear
+      </button>
+
+    </form>
+
+    <p id="eventStatus"></p>
+
+  </div>
+
+  <div class="card">
+
+    <h3>Events</h3>
+
+    <div id="eventList">
+      Loading events...
+    </div>
+
+  </div>
+
 </section>
-    <section id="events" class="section">
-      <h1>Events</h1>
-      <div class="form-box">
-        <p class="muted">Events management will be connected next.</p>
-      </div>
-    </section>
 
     <section id="media" class="section">
       <h1>Media</h1>
