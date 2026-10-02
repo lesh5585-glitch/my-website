@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Leshky Records — Admin Dashboard</title>
+  <title>Leshky Records — Dashboard</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -16,7 +16,7 @@
 
     body {
       font-family: Arial, sans-serif;
-      background: #111;
+      background: #0b0b0b;
       color: #fff;
     }
 
@@ -27,38 +27,43 @@
 
     .sidebar {
       width: 240px;
-      background: #080808;
-      border-right: 1px solid #333;
+      background: #111;
+      border-right: 1px solid #2b2b2b;
       padding: 25px 15px;
       position: fixed;
       left: 0;
       top: 0;
       bottom: 0;
+      overflow-y: auto;
     }
 
-    .logo {
+    .brand {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .brand h2 {
       color: #d4af37;
       font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 8px;
+      margin-bottom: 5px;
     }
 
-    .tagline {
+    .brand p {
       color: #aaa;
-      font-size: 11px;
-      margin-bottom: 30px;
+      font-size: 12px;
     }
 
     .nav-btn {
       width: 100%;
-      padding: 13px;
-      margin-bottom: 8px;
+      background: transparent;
       border: none;
-      background: #181818;
-      color: #ddd;
+      color: #ccc;
+      padding: 13px 15px;
+      margin-bottom: 7px;
       text-align: left;
       border-radius: 6px;
       cursor: pointer;
+      font-size: 14px;
     }
 
     .nav-btn:hover,
@@ -67,17 +72,19 @@
       color: #fff;
     }
 
-    .logout {
-      position: absolute;
-      bottom: 25px;
-      left: 15px;
-      width: calc(100% - 30px);
-      padding: 12px;
-      border: 1px solid #8b0000;
-      background: transparent;
+    .logout-btn {
+      margin-top: 25px;
+      background: #222;
       color: #fff;
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #444;
       border-radius: 6px;
       cursor: pointer;
+    }
+
+    .logout-btn:hover {
+      background: #8b0000;
     }
 
     .main {
@@ -86,24 +93,49 @@
       padding: 30px;
     }
 
-    h1 {
-      margin-bottom: 25px;
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      border-bottom: 1px solid #2b2b2b;
+      padding-bottom: 20px;
     }
 
-    .gold {
+    .topbar h1 {
       color: #d4af37;
+      font-size: 28px;
+    }
+
+    .topbar span {
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .section-title {
+      color: #d4af37;
+      margin-bottom: 20px;
+      font-size: 22px;
     }
 
     .cards {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
+      gap: 18px;
       margin-bottom: 30px;
     }
 
     .card {
-      background: #1a1a1a;
-      border: 1px solid #333;
+      background: #151515;
+      border: 1px solid #292929;
       border-radius: 8px;
       padding: 20px;
     }
@@ -115,23 +147,42 @@
     }
 
     .card strong {
-      font-size: 28px;
       color: #d4af37;
+      font-size: 30px;
     }
 
-    .section {
-      display: none;
+    .form-box {
+      background: #151515;
+      border: 1px solid #292929;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 25px;
     }
 
-    .section.active {
+    .form-box h3 {
+      color: #d4af37;
+      margin-bottom: 18px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
       display: block;
-    }
-
-    .toolbar {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
+      color: #bbb;
+      font-size: 13px;
+      margin-bottom: 7px;
     }
 
     input,
@@ -139,11 +190,17 @@
     select {
       width: 100%;
       padding: 12px;
-      background: #181818;
-      border: 1px solid #444;
+      background: #0d0d0d;
+      border: 1px solid #333;
+      border-radius: 5px;
       color: #fff;
-      border-radius: 6px;
-      margin-top: 6px;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #d4af37;
     }
 
     textarea {
@@ -151,177 +208,183 @@
       resize: vertical;
     }
 
-    label {
-      display: block;
-      margin-top: 15px;
-      color: #ddd;
-      font-size: 14px;
-    }
-
-    button {
-      padding: 11px 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .primary {
+    .btn {
       background: #8b0000;
-      color: white;
+      color: #fff;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
     }
 
-    .secondary {
+    .btn:hover {
+      background: #a80000;
+    }
+
+    .btn-gold {
       background: #d4af37;
-      color: #111;
+      color: #000;
     }
 
-    .danger {
-      background: #7a0000;
-      color: white;
+    .btn-gold:hover {
+      background: #e3c354;
     }
 
-    .form-box {
-      background: #181818;
-      border: 1px solid #333;
-      padding: 22px;
-      border-radius: 8px;
-      margin-bottom: 25px;
+    .btn-danger {
+      background: #5b0000;
     }
 
-    .form-grid {
+    .btn-small {
+      padding: 7px 12px;
+      font-size: 12px;
+      margin-right: 5px;
+    }
+
+    .list {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .list-item {
+      background: #151515;
+      border: 1px solid #292929;
+      border-radius: 7px;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       gap: 15px;
     }
 
-    .full {
-      grid-column: 1 / -1;
+    .list-info {
+      flex: 1;
     }
 
-    .artist-grid,
-    .song-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+    .list-info h4 {
+      color: #fff;
+      margin-bottom: 5px;
     }
 
-    .artist-card,
-    .song-card {
-      background: #181818;
-      border: 1px solid #333;
-      border-radius: 8px;
-      overflow: hidden;
+    .list-info p {
+      color: #999;
+      font-size: 13px;
+      line-height: 1.5;
     }
 
-    .artist-card img,
-    .song-cover {
-      width: 100%;
-      height: 220px;
+    .thumb {
+      width: 70px;
+      height: 70px;
       object-fit: cover;
+      border-radius: 5px;
       background: #222;
     }
 
-    .artist-info,
-    .song-info {
-      padding: 15px;
-    }
-
-    .artist-info h3,
-    .song-info h3 {
-      margin-bottom: 7px;
-    }
-
-    .muted {
-      color: #999;
-      font-size: 13px;
-    }
-
     .actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 14px;
-      flex-wrap: wrap;
-    }
-
-    .actions button {
-      font-size: 12px;
-      padding: 8px 10px;
-    }
-
-    audio {
-      width: 100%;
-      margin-top: 10px;
+      white-space: nowrap;
     }
 
     .status {
-      margin-top: 12px;
-      padding: 10px;
-      border-radius: 6px;
-      display: none;
+      margin-top: 10px;
+      font-size: 13px;
+      color: #aaa;
     }
 
-    .status.show {
-      display: block;
+    .success {
+      color: #4caf50;
     }
 
-    .status.success {
-      background: #123d20;
-      color: #9df0b0;
+    .error {
+      color: #ff5252;
     }
 
-    .status.error {
-      background: #4a1010;
-      color: #ffaaaa;
+    .empty {
+      background: #151515;
+      border: 1px dashed #333;
+      padding: 25px;
+      text-align: center;
+      color: #888;
+      border-radius: 7px;
     }
 
-    .checkbox-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 15px;
+    .search-box {
+      margin-bottom: 18px;
     }
 
-    .checkbox-row input {
-      width: auto;
-      margin: 0;
+    .media-preview {
+      max-width: 180px;
+      max-height: 120px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-top: 8px;
+    }
+
+    audio {
+      width: 250px;
+      max-width: 100%;
+    }
+
+    .settings-note {
+      color: #888;
+      font-size: 13px;
+      margin-bottom: 18px;
+      line-height: 1.6;
     }
 
     @media (max-width: 900px) {
-      .cards,
-      .artist-grid,
-      .song-grid {
+      .sidebar {
+        width: 200px;
+      }
+
+      .main {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+        padding: 20px;
+      }
+
+      .cards {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 650px) {
+      .layout {
+        display: block;
+      }
+
       .sidebar {
         position: relative;
         width: 100%;
         height: auto;
-        min-height: auto;
-      }
-
-      .layout {
-        display: block;
+        border-right: none;
+        border-bottom: 1px solid #2b2b2b;
       }
 
       .main {
         margin-left: 0;
         width: 100%;
+        padding: 15px;
       }
 
-      .logout {
-        position: static;
-        width: 100%;
-        margin-top: 20px;
+      .cards {
+        grid-template-columns: 1fr 1fr;
       }
 
-      .form-grid,
-      .cards,
-      .artist-grid,
-      .song-grid {
+      .form-grid {
         grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+      .list-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .actions {
+        width: 100%;
       }
     }
   </style>
@@ -332,36 +395,70 @@
 <div class="layout">
 
   <aside class="sidebar">
-    <div class="logo">LESHKY RECORDS</div>
-    <div class="tagline">SOUND TO LEGACY</div>
 
-    <button class="nav-btn active" onclick="showSection('overview', this)">Dashboard</button>
-    <button class="nav-btn" onclick="showSection('artists', this)">Artists</button>
-    <button class="nav-btn" onclick="showSection('music', this)">Music</button>
-    <button class="nav-btn" onclick="showSection('albums', this)">Albums / EPs</button>
-    <button class="nav-btn" onclick="showSection('news', this)">News</button>
-    <button class="nav-btn" onclick="showSection('events', this)">Events</button>
-    <button class="nav-btn" onclick="showSection('media', this)">Media</button>
-    <button class="nav-btn" onclick="showSection('settings', this)">Settings</button>
+    <div class="brand">
+      <h2>LESHKY RECORDS</h2>
+      <p>SOUND TO LEGACY</p>
+    </div>
 
-    <button class="logout" onclick="logout()">Logout</button>
+    <button class="nav-btn active" onclick="showSection('overview', this)">
+      Dashboard
+    </button>
+
+    <button class="nav-btn" onclick="showSection('artists', this)">
+      Artists
+    </button>
+
+    <button class="nav-btn" onclick="showSection('music', this)">
+      Music
+    </button>
+
+    <button class="nav-btn" onclick="showSection('albums', this)">
+      Albums / EPs
+    </button>
+
+    <button class="nav-btn" onclick="showSection('news', this)">
+      News
+    </button>
+
+    <button class="nav-btn" onclick="showSection('events', this)">
+      Events
+    </button>
+
+    <button class="nav-btn" onclick="showSection('media', this)">
+      Media
+    </button>
+
+    <button class="nav-btn" onclick="showSection('settings', this)">
+      Settings
+    </button>
+
+    <button class="logout-btn" onclick="logout()">
+      Logout
+    </button>
+
   </aside>
+
 
   <main class="main">
 
-    <!-- OVERVIEW -->
+    <div class="topbar">
+      <h1>Leshky Records</h1>
+      <span>Admin Dashboard</span>
+    </div>
+
+
+    <!-- ==================== OVERVIEW ==================== -->
+
     <section id="overview" class="section active">
-      <h1>Admin <span class="gold">Dashboard</span></h1>
+
+      <h2 class="section-title">Dashboard Overview</h2>
 
       <div class="cards">
+
         <div class="card">
           <h3>Artists</h3>
           <strong id="artistCount">0</strong>
-        </div>
-
-        <div class="card">
-          <h3>Songs</h3>
-          <strong id="songCount">0</strong>
         </div>
 
         <div class="card">
@@ -370,3155 +467,2999 @@
         </div>
 
         <div class="card">
+          <h3>Songs</h3>
+          <strong id="songCount">0</strong>
+        </div>
+
+        <div class="card">
           <h3>News</h3>
           <strong id="newsCount">0</strong>
         </div>
+
       </div>
 
       <div class="form-box">
-        <h2>Welcome to Leshky Records</h2>
-        <p class="muted" style="margin-top:10px;">
-          Manage your artists, music releases and label content from this dashboard.
+        <h3>Welcome to Leshky Records</h3>
+
+        <p class="settings-note">
+          Manage your artists, music, albums, news, events, media and
+          website settings from this dashboard.
+        </p>
+
+        <p class="settings-note">
+          <strong style="color:#d4af37;">SOUND TO LEGACY.</strong>
         </p>
       </div>
+
     </section>
 
 
-    <!-- ARTISTS -->
+    <!-- ==================== ARTISTS ==================== -->
+
     <section id="artists" class="section">
 
-      <h1>Artist <span class="gold">Manager</span></h1>
+      <h2 class="section-title">Artists Manager</h2>
 
       <div class="form-box">
 
-        <h2 id="artistFormTitle">Add Artist</h2>
+        <h3>Add / Edit Artist</h3>
 
         <input type="hidden" id="artistId">
 
         <div class="form-grid">
 
-          <div>
+          <div class="form-group">
             <label>Artist Name</label>
-            <input id="artistName" type="text" placeholder="Artist name">
+            <input type="text" id="artistName" placeholder="Artist name">
           </div>
 
-          <div>
+          <div class="form-group">
             <label>Genre</label>
-            <input id="artistGenre" type="text" placeholder="Afrobeats, Hip-Hop, Gospel...">
+            <input type="text" id="artistGenre" placeholder="Afrobeats, Hip-Hop, Gospel...">
           </div>
 
-          <div class="full">
+          <div class="form-group full">
             <label>Biography</label>
             <textarea id="artistBio" placeholder="Artist biography"></textarea>
           </div>
 
-          <div>
-            <label>Instagram</label>
-            <input id="artistInstagram" type="text">
-          </div>
-
-          <div>
-            <label>Facebook</label>
-            <input id="artistFacebook" type="text">
-          </div>
-
-          <div>
-            <label>X / Twitter</label>
-            <input id="artistTwitter" type="text">
-          </div>
-
-          <div>
-            <label>YouTube</label>
-            <input id="artistYoutube" type="text">
-          </div>
-
-          <div class="full">
+          <div class="form-group full">
             <label>Artist Photo</label>
-            <input id="artistPhoto" type="file" accept="image/*">
+            <input type="file" id="artistPhoto" accept="image/*">
           </div>
 
         </div>
 
-        <div class="actions">
-          <button class="primary" onclick="saveArtist()">Save Artist</button>
-          <button class="secondary" onclick="resetArtistForm()">Clear</button>
-        </div>
+        <button class="btn btn-gold" onclick="saveArtist()">
+          Save Artist
+        </button>
+
+        <button class="btn" onclick="clearArtistForm()">
+          Clear
+        </button>
 
         <div id="artistStatus" class="status"></div>
 
       </div>
 
-      <div class="toolbar">
-        <input id="artistSearch" type="text" placeholder="Search artists..." oninput="renderArtists()">
-        <button class="secondary" onclick="loadArtists()">Refresh</button>
-      </div>
 
-      <div id="artistList" class="artist-grid"></div>
+      <div class="form-box">
+
+        <h3>Artists</h3>
+
+        <div class="search-box">
+          <input
+            type="text"
+            id="artistSearch"
+            placeholder="Search artists..."
+            oninput="renderArtists()"
+          >
+        </div>
+
+        <div id="artistsList" class="list"></div>
+
+      </div>
 
     </section>
 
 
-    <!-- MUSIC -->
+    <!-- ==================== MUSIC ==================== -->
+
     <section id="music" class="section">
 
-      <h1>Music <span class="gold">Manager</span></h1>
+      <h2 class="section-title">Music Manager</h2>
 
       <div class="form-box">
 
-        <h2 id="songFormTitle">Upload Song</h2>
+        <h3>Add / Edit Song</h3>
 
         <input type="hidden" id="songId">
 
         <div class="form-grid">
 
-          <div>
+          <div class="form-group">
             <label>Song Title</label>
-            <input id="songTitle" type="text" placeholder="Song title">
+            <input type="text" id="songTitle" placeholder="Song title">
           </div>
 
-          <div>
+          <div class="form-group">
             <label>Artist</label>
             <select id="songArtist">
               <option value="">Select artist</option>
             </select>
           </div>
 
-          <div>
+          <div class="form-group">
             <label>Album / EP</label>
             <select id="songAlbum">
-              <option value="">Single / No Album</option>
+              <option value="">Select album / EP</option>
             </select>
           </div>
 
-          <div>
-            <label>Genre</label>
-            <input id="songGenre" type="text" placeholder="Afrobeats">
-          </div>
-
-          <div>
-            <label>Release Date</label>
-            <input id="songReleaseDate" type="date">
-          </div>
-
-          <div>
-            <label>Cover Art</label>
-            <input id="songCover" type="file" accept="image/*">
-          </div>
-
-          <div class="full">
+          <div class="form-group">
             <label>Audio File</label>
-            <input id="songAudio" type="file" accept="audio/*">
+            <input type="file" id="songFile" accept="audio/*">
           </div>
 
-          <div class="full">
-            <label>Lyrics</label>
-            <textarea id="songLyrics" placeholder="Song lyrics"></textarea>
+          <div class="form-group full">
+            <label>Cover Image</label>
+            <input type="file" id="songCover" accept="image/*">
           </div>
 
         </div>
 
-        <div class="checkbox-row">
-          <input id="songFeatured" type="checkbox">
-          <label for="songFeatured" style="margin:0;">Featured Song</label>
-        </div>
+        <button class="btn btn-gold" onclick="saveSong()">
+          Save Song
+        </button>
 
-        <div class="actions">
-          <button class="primary" onclick="saveSong()">Save Song</button>
-          <button class="secondary" onclick="resetSongForm()">Clear</button>
-        </div>
+        <button class="btn" onclick="clearSongForm()">
+          Clear
+        </button>
 
         <div id="songStatus" class="status"></div>
 
       </div>
 
-      <div class="toolbar">
-        <input id="songSearch" type="text" placeholder="Search songs..." oninput="renderSongs()">
-        <button class="secondary" onclick="loadSongs()">Refresh</button>
-      </div>
 
-      <div id="songList" class="song-grid"></div>
+      <div class="form-box">
+
+        <h3>Songs</h3>
+
+        <div id="songsList" class="list"></div>
+
+      </div>
 
     </section>
 
 
-    <!-- PLACEHOLDERS -->
-<section id="albums" class="section">
+    <!-- ==================== ALBUMS ==================== -->
 
-  <h1>Albums / <span class="gold">EPs</span></h1>
+    <section id="albums" class="section">
 
-  <div class="form-box">
+      <h2 class="section-title">Albums / EP Manager</h2>
 
-    <h2 id="albumFormTitle">Create Album / EP</h2>
+      <div class="form-box">
 
-    <input type="hidden" id="albumId">
+        <h3>Add / Edit Album / EP</h3>
 
-    <div class="form-grid">
+        <input type="hidden" id="albumId">
 
-      <div>
-        <label>Title</label>
-        <input id="albumTitle" type="text" placeholder="Album or EP title">
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" id="albumTitle" placeholder="Album or EP title">
+          </div>
+
+          <div class="form-group">
+            <label>Artist</label>
+            <select id="albumArtist">
+              <option value="">Select artist</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Type</label>
+            <select id="albumType">
+              <option value="Album">Album</option>
+              <option value="EP">EP</option>
+              <option value="Single">Single</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Release Date</label>
+            <input type="date" id="albumReleaseDate">
+          </div>
+
+          <div class="form-group full">
+            <label>Cover Image</label>
+            <input type="file" id="albumCover" accept="image/*">
+          </div>
+
+        </div>
+
+        <button class="btn btn-gold" onclick="saveAlbum()">
+          Save Album / EP
+        </button>
+
+        <button class="btn" onclick="clearAlbumForm()">
+          Clear
+        </button>
+
+        <div id="albumStatus" class="status"></div>
+
       </div>
 
-      <div>
-        <label>Artist</label>
-        <select id="albumArtist">
-          <option value="">Select artist</option>
-        </select>
+
+      <div class="form-box">
+
+        <h3>Albums / EPs</h3>
+
+        <div id="albumsList" class="list"></div>
+
       </div>
 
-      <div>
-        <label>Type</label>
-        <select id="albumType">
-          <option value="album">Album</option>
-          <option value="ep">EP</option>
-        </select>
+    </section>
+
+
+    <!-- ==================== NEWS ==================== -->
+
+    <section id="news" class="section">
+
+      <h2 class="section-title">News Manager</h2>
+
+      <div class="form-box">
+
+        <h3>Add / Edit News</h3>
+
+        <form id="newsForm">
+
+          <input type="hidden" id="newsId">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label>News Title</label>
+              <input
+                type="text"
+                id="newsTitle"
+                placeholder="News title"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Publish Date</label>
+              <input
+                type="date"
+                id="newsDate"
+              >
+            </div>
+
+            <div class="form-group full">
+              <label>Content</label>
+              <textarea
+                id="newsContent"
+                placeholder="Write your news article..."
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label>News Image</label>
+              <input
+                type="file"
+                id="newsImage"
+                accept="image/*"
+              >
+            </div>
+
+          </div>
+
+          <button type="submit" class="btn btn-gold">
+            Save News
+          </button>
+
+          <button
+            type="button"
+            class="btn"
+            onclick="clearNewsForm()"
+          >
+            Clear
+          </button>
+
+          <div id="newsStatus" class="status"></div>
+
+        </form>
+
       </div>
 
-      <div>
-        <label>Release Date</label>
-        <input id="albumReleaseDate" type="date">
+
+      <div class="form-box">
+
+        <h3>Published News</h3>
+
+        <div id="newsList" class="list"></div>
+
       </div>
 
-      <div class="full">
-        <label>Description</label>
-        <textarea id="albumDescription"
-          placeholder="Describe this album or EP"></textarea>
+    </section>
+
+
+    <!-- ==================== EVENTS ==================== -->
+
+    <section id="events" class="section">
+
+      <h2 class="section-title">Events Manager</h2>
+
+      <div class="form-box">
+
+        <h3>Add / Edit Event</h3>
+
+        <form id="eventForm">
+
+          <input type="hidden" id="eventId">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label>Event Title</label>
+              <input
+                type="text"
+                id="eventTitle"
+                placeholder="Event title"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Event Date</label>
+              <input
+                type="date"
+                id="eventDate"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Event Time</label>
+              <input
+                type="time"
+                id="eventTime"
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Venue</label>
+              <input
+                type="text"
+                id="eventVenue"
+                placeholder="Venue"
+              >
+            </div>
+
+            <div class="form-group full">
+              <label>Description</label>
+              <textarea
+                id="eventDescription"
+                placeholder="Event description"
+              ></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label>Event Image</label>
+              <input
+                type="file"
+                id="eventImage"
+                accept="image/*"
+              >
+            </div>
+
+          </div>
+
+          <button type="submit" class="btn btn-gold">
+            Save Event
+          </button>
+
+          <button
+            type="button"
+            class="btn"
+            onclick="clearEventForm()"
+          >
+            Clear
+          </button>
+
+          <div id="eventStatus" class="status"></div>
+
+        </form>
+
       </div>
 
-      <div class="full">
-        <label>Cover Art</label>
-        <input id="albumCover" type="file" accept="image/*">
+
+      <div class="form-box">
+
+        <h3>Events</h3>
+
+        <div id="eventsList" class="list"></div>
+
       </div>
 
-    </div>
+    </section>
 
-    <div class="actions">
-      <button class="primary" onclick="saveAlbum()">Save Album / EP</button>
-      <button class="secondary" onclick="resetAlbumForm()">Clear</button>
-    </div>
 
-    <div id="albumStatus" class="status"></div>
-
-  </div>
-
-  <div id="albumList" class="song-grid"></div>
-
-</section>
-
-<section id="news" class="section">
-
-  <h2>News Management</h2>
-
-  <div class="card">
-
-    <h3>Add News</h3>
-
-    <form id="newsForm">
-
-      <input
-        type="hidden"
-        id="newsId"
-      >
-
-      <label>Title</label>
-      <input
-        type="text"
-        id="newsTitle"
-        placeholder="News title"
-        required
-      >
-
-      <label>Author</label>
-      <input
-        type="text"
-        id="newsAuthor"
-        placeholder="Author name"
-      >
-
-      <label>Published Date</label>
-      <input
-        type="datetime-local"
-        id="newsPublishedAt"
-      >
-
-      <label>Excerpt</label>
-      <textarea
-        id="newsExcerpt"
-        placeholder="Short description of the news"
-        rows="3"
-      ></textarea>
-
-      <label>Content</label>
-      <textarea
-        id="newsContent"
-        placeholder="Full news content"
-        rows="8"
-        required
-      ></textarea>
-
-      <label>News Image</label>
-      <input
-        type="file"
-        id="newsImage"
-        accept="image/*"
-      >
-
-      <button type="submit">
-        Save News
-      </button>
-
-      <button
-        type="button"
-        onclick="resetNewsForm()"
-      >
-        Clear
-      </button>
-
-    </form>
-
-    <p id="newsStatus"></p>
-
-  </div>
-
-  <div class="card">
-
-    <h3>News Articles</h3>
-
-    <div id="newsList">
-      Loading news...
-    </div>
-
-  </div>
-
-</section>  
-
-<section id="events" class="section">
-
-  <h2>Events Management</h2>
-
-  <div class="card">
-
-    <h3>Add Event</h3>
-
-    <form id="eventForm">
-
-      <input
-        type="hidden"
-        id="eventId"
-      >
-
-      <label>Event Title</label>
-      <input
-        type="text"
-        id="eventTitle"
-        placeholder="Event title"
-        required
-      >
-
-      <label>Description</label>
-      <textarea
-        id="eventDescription"
-        placeholder="Event description"
-        rows="5"
-      ></textarea>
-
-      <label>Location</label>
-      <input
-        type="text"
-        id="eventLocation"
-        placeholder="Event location"
-      >
-
-      <label>Event Date</label>
-      <input
-        type="datetime-local"
-        id="eventDate"
-        required
-      >
-
-      <label>Event Image</label>
-      <input
-        type="file"
-        id="eventImage"
-        accept="image/*"
-      >
-
-      <label>Ticket / Event Link</label>
-      <input
-        type="url"
-        id="eventTicketUrl"
-        placeholder="https://..."
-      >
-
-      <button type="submit">
-        Save Event
-      </button>
-
-      <button
-        type="button"
-        onclick="resetEventForm()"
-      >
-        Clear
-      </button>
-
-    </form>
-
-    <p id="eventStatus"></p>
-
-  </div>
-
-  <div class="card">
-
-    <h3>Events</h3>
-
-    <div id="eventList">
-      Loading events...
-    </div>
-
-  </div>
-
-</section>
+    <!-- ==================== MEDIA ==================== -->
 
     <section id="media" class="section">
 
-  <h2>Media Management</h2>
+      <h2 class="section-title">Media Manager</h2>
 
-  <div class="card">
+      <div class="form-box">
 
-    <h3>Add Media</h3>
+        <h3>Add / Edit Media</h3>
 
-    <form id="mediaForm">
+        <form id="mediaForm">
 
-      <input
-        type="hidden"
-        id="mediaId"
-      >
+          <input type="hidden" id="mediaId">
 
-      <label>Title</label>
-      <input
-        type="text"
-        id="mediaTitle"
-        placeholder="Media title"
-        required
-      >
+          <div class="form-grid">
 
-      <label>Media Type</label>
-      <select id="mediaType">
+            <div class="form-group">
+              <label>Media Title</label>
+              <input
+                type="text"
+                id="mediaTitle"
+                placeholder="Media title"
+                required
+              >
+            </div>
 
-        <option value="image">
-          Image
-        </option>
+            <div class="form-group">
+              <label>Media Type</label>
+              <select id="mediaType" required>
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+              </select>
+            </div>
 
-        <option value="video">
-          Video
-        </option>
+            <div class="form-group full">
+              <label>Media File</label>
+              <input
+                type="file"
+                id="mediaFile"
+                accept="image/*,video/*"
+              >
+              <p class="settings-note">
+                Leave the file empty when editing if you want to keep
+                the existing file.
+              </p>
+            </div>
 
-      </select>
+          </div>
 
-      <label>File</label>
-      <input
-        type="file"
-        id="mediaFile"
-        accept="image/*,video/*"
-        required
-      >
+          <button type="submit" class="btn btn-gold">
+            Save Media
+          </button>
 
-      <label>Description</label>
-      <textarea
-        id="mediaDescription"
-        placeholder="Description"
-        rows="4"
-      ></textarea>
+          <button
+            type="button"
+            class="btn"
+            onclick="clearMediaForm()"
+          >
+            Clear
+          </button>
 
-      <button type="submit">
-        Save Media
-      </button>
+          <div id="mediaStatus" class="status"></div>
 
-      <button
-        type="button"
-        onclick="resetMediaForm()"
-      >
-        Clear
-      </button>
+        </form>
 
-    </form>
+      </div>
 
-    <p id="mediaStatus"></p>
 
-  </div>
+      <div class="form-box">
 
-  <div class="card">
+        <h3>Media Library</h3>
 
-    <h3>Media Library</h3>
+        <div id="mediaList" class="list"></div>
 
-    <div id="mediaList">
-      Loading media...
-    </div>
+      </div>
 
-  </div>
+    </section>
 
-</section>
+
+    <!-- ==================== SETTINGS ==================== -->
+
+    <section id="settings" class="section">
+
+      <h2 class="section-title">Website Settings</h2>
+
+      <div class="form-box">
+
+        <h3>Site Information</h3>
+
+        <p class="settings-note">
+          Update the main information used across the Leshky Records
+          website.
+        </p>
+
+        <form id="settingsForm">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label>Site Name</label>
+              <input
+                type="text"
+                id="settingSiteName"
+                placeholder="Leshky Records"
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Slogan</label>
+              <input
+                type="text"
+                id="settingSlogan"
+                placeholder="SOUND TO LEGACY"
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Contact Email</label>
+              <input
+                type="email"
+                id="settingEmail"
+                placeholder="Email address"
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Phone</label>
+              <input
+                type="text"
+                id="settingPhone"
+                placeholder="Phone number"
+              >
+            </div>
+
+            <div class="form-group full">
+              <label>Address</label>
+              <input
+                type="text"
+                id="settingAddress"
+                placeholder="Address"
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Instagram</label>
+              <input
+                type="text"
+                id="settingInstagram"
+                placeholder="Instagram URL"
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Facebook</label>
+              <input
+                type="text"
+                id="settingFacebook"
+                placeholder="Facebook URL"
+              >
+            </div>
+
+            <div class="form-group">
+              <label>YouTube</label>
+              <input
+                type="text"
+                id="settingYoutube"
+                placeholder="YouTube URL"
+              >
+            </div>
+
+          </div>
+
+          <button type="submit" class="btn btn-gold">
+            Save Settings
+          </button>
+
+          <div id="settingsStatus" class="status"></div>
+
+        </form>
+
+      </div>
+
+    </section>
 
   </main>
+
 </div>
 
 
+<!-- PART 2 CONTINUES HERE -->
+
 <script>
-
-const SUPABASE_URL = "https://dcjeqalpzuewlholdbqc.supabase.co";
-const SUPABASE_KEY = "sb_publishable_LZkkwMKMxbEMi3hKY-op4g_gHSQO529";
-
-const { createClient } = supabase;
-const client = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-let artists = [];
-let songs = [];
-let albums = [];
-
-
-/* AUTH */
-
-async function checkAuth() {
-
-  const { data } = await client.auth.getSession();
-
-  if (!data.session) {
-    window.location.href = "admin.html";
-    return;
-  }
-
-  loadEverything();
-}
-
-
-async function logout() {
-
-  await client.auth.signOut();
-
-  window.location.href = "admin.html";
-}
-
-
-/* NAVIGATION */
-
-function showSection(id, button) {
-
-  document.querySelectorAll(".section").forEach(section => {
-    section.classList.remove("active");
-  });
-
-  document.getElementById(id).classList.add("active");
-
-  document.querySelectorAll(".nav-btn").forEach(btn => {
-    btn.classList.remove("active");
-  });
-
-  button.classList.add("active");
-}
-
-
-/* LOAD EVERYTHING */
-
-async function loadEverything() {
-
-  await loadArtists();
-
-  await loadAlbums();
-
-  await loadSongs();
-
-  await loadCounts();
-
-}
-
-/* COUNTS */
-
-async function loadCounts() {
-
-  const artistsResult = await client
-    .from("artists")
-    .select("*", { count: "exact", head: true });
-
-  const songsResult = await client
-    .from("songs")
-    .select("*", { count: "exact", head: true });
-
-  const albumsResult = await client
-    .from("albums")
-    .select("*", { count: "exact", head: true });
-
-  const newsResult = await client
-    .from("news")
-    .select("*", { count: "exact", head: true });
-
-  document.getElementById("artistCount").textContent =
-    artistsResult.count || 0;
-
-  document.getElementById("songCount").textContent =
-    songsResult.count || 0;
-
-  document.getElementById("albumCount").textContent =
-    albumsResult.count || 0;
-
-  document.getElementById("newsCount").textContent =
-    newsResult.count || 0;
-}
-
-
-/* SLUG */
-
-function makeSlug(text) {
-
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
-}
-
-
-/* ARTISTS */
-
-async function loadArtists() {
-
-  const { data, error } = await client
-    .from("artists")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-
-    showStatus(
-      "artistStatus",
-      "Error loading artists: " + error.message,
-      "error"
-    );
-
-    return;
-  }
-
-  artists = data || [];
-
-  renderArtists();
-  populateArtistSelect();
-}
-
-
-function renderArtists() {
-
-  const container = document.getElementById("artistList");
-
-  const search =
-    document.getElementById("artistSearch").value.toLowerCase();
-
-  const filtered = artists.filter(artist =>
-    artist.name.toLowerCase().includes(search)
-  );
-
-  container.innerHTML = "";
-
-  filtered.forEach(artist => {
-
-    const photo = artist.photo_url ||
-      "https://via.placeholder.com/500x500?text=Artist";
-
-    const card = document.createElement("div");
-
-    card.className = "artist-card";
-
-    card.innerHTML = `
-      <img src="${photo}" alt="${escapeHtml(artist.name)}">
-
-      <div class="artist-info">
-
-        <h3>${escapeHtml(artist.name)}</h3>
-
-        <div class="muted">
-          ${escapeHtml(artist.genre || "Genre not set")}
-        </div>
-
-        <div class="actions">
-
-          <button class="secondary"
-            onclick="editArtist('${artist.id}')">
-            Edit
-          </button>
-
-          <button class="danger"
-            onclick="deleteArtist('${artist.id}')">
-            Delete
-          </button>
-
-        </div>
-
-      </div>
-    `;
-
-    container.appendChild(card);
-
-  });
-}
-
-
-function populateArtistSelect() {
-
-  const select = document.getElementById("songArtist");
-
-  select.innerHTML =
-    '<option value="">Select artist</option>';
-
-  artists.forEach(artist => {
-
-    const option = document.createElement("option");
-
-    option.value = artist.id;
-    option.textContent = artist.name;
-
-    select.appendChild(option);
-
-  });
-}
-
-
-async function saveArtist() {
-
-  const id = document.getElementById("artistId").value;
-
-  const name =
-    document.getElementById("artistName").value.trim();
-
-  if (!name) {
-
-    showStatus(
-      "artistStatus",
-      "Artist name is required.",
-      "error"
-    );
-
-    return;
-  }
-
-  const genre =
-    document.getElementById("artistGenre").value.trim();
-
-  const bio =
-    document.getElementById("artistBio").value.trim();
-
-  const instagram =
-    document.getElementById("artistInstagram").value.trim();
-
-  const facebook =
-    document.getElementById("artistFacebook").value.trim();
-
-  const twitter =
-    document.getElementById("artistTwitter").value.trim();
-
-  const youtube =
-    document.getElementById("artistYoutube").value.trim();
-
-  let photoUrl = null;
-
-  if (id) {
-
-    const existing = artists.find(a => a.id === id);
-
-    if (existing) {
-      photoUrl = existing.photo_url;
-    }
-
-  }
-
-  const file =
-    document.getElementById("artistPhoto").files[0];
-
-  if (file) {
-
-    const fileName =
-      Date.now() + "-" + file.name.replace(/\s+/g, "-");
-
-    const { error: uploadError } =
-      await client.storage
-        .from("artists")
-        .upload(fileName, file);
-
-    if (uploadError) {
-
-      showStatus(
-        "artistStatus",
-        "Photo upload failed: " + uploadError.message,
-        "error"
-      );
-
-      return;
-    }
-
-    const { data: publicData } =
-      client.storage
-        .from("artists")
-        .getPublicUrl(fileName);
-
-    photoUrl = publicData.publicUrl;
-  }
-
-
-  const payload = {
-
-    name,
-    slug: makeSlug(name),
-    genre,
-    bio,
-    instagram,
-    facebook,
-    twitter,
-    youtube
-
-  };
-
-  if (photoUrl) {
-    payload.photo_url = photoUrl;
-  }
-
-
-  let result;
-
-  if (id) {
-
-    result = await client
-      .from("artists")
-      .update(payload)
-      .eq("id", id);
-
-  } else {
-
-    result = await client
-      .from("artists")
-      .insert(payload);
-
-  }
-
-
-  if (result.error) {
-
-    showStatus(
-      "artistStatus",
-      result.error.message,
-      "error"
-    );
-
-    return;
-  }
-
-
-  showStatus(
-    "artistStatus",
-    id ? "Artist updated successfully." : "Artist added successfully.",
-    "success"
-  );
-
-  resetArtistForm();
-
-  await loadArtists();
-  await loadCounts();
-
-}
-
-
-function editArtist(id) {
-
-  const artist = artists.find(a => a.id === id);
-
-  if (!artist) return;
-
-  document.getElementById("artistId").value = artist.id;
-  document.getElementById("artistName").value = artist.name || "";
-  document.getElementById("artistGenre").value = artist.genre || "";
-  document.getElementById("artistBio").value = artist.bio || "";
-  document.getElementById("artistInstagram").value = artist.instagram || "";
-  document.getElementById("artistFacebook").value = artist.facebook || "";
-  document.getElementById("artistTwitter").value = artist.twitter || "";
-  document.getElementById("artistYoutube").value = artist.youtube || "";
-
-  document.getElementById("artistFormTitle").textContent =
-    "Edit Artist";
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-}
-
-
-async function deleteArtist(id) {
-
-  if (!confirm("Delete this artist?")) return;
-
-  const { error } = await client
-    .from("artists")
-    .delete()
-    .eq("id", id);
-
-  if (error) {
-
-    alert(error.message);
-    return;
-  }
-
-  await loadArtists();
-  await loadCounts();
-
-}
-
-
-function resetArtistForm() {
-
-  document.getElementById("artistId").value = "";
-  document.getElementById("artistName").value = "";
-  document.getElementById("artistGenre").value = "";
-  document.getElementById("artistBio").value = "";
-  document.getElementById("artistInstagram").value = "";
-  document.getElementById("artistFacebook").value = "";
-  document.getElementById("artistTwitter").value = "";
-  document.getElementById("artistYoutube").value = "";
-  document.getElementById("artistPhoto").value = "";
-
-  document.getElementById("artistFormTitle").textContent =
-    "Add Artist";
-
-}
-
-
-/* ALBUMS */
-
-async function loadAlbums() {
-
-  const { data, error } = await client
-    .from("albums")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-
-    showStatus(
-      "albumStatus",
-      "Error loading albums: " + error.message,
-      "error"
-    );
-
-    return;
-  }
-
-  albums = data || [];
-
-  populateAlbumSelect();
-  populateAlbumArtistSelect();
-  renderAlbums();
-
-}
-
-function populateAlbumArtistSelect() {
-
-  const select = document.getElementById("albumArtist");
-
-  select.innerHTML =
-    '<option value="">Select artist</option>';
-
-  artists.forEach(artist => {
-
-    const option = document.createElement("option");
-
-    option.value = artist.id;
-    option.textContent = artist.name;
-
-    select.appendChild(option);
-
-  });
-
-}
-
-
-function renderAlbums() {
-
-  const container =
-    document.getElementById("albumList");
-
-  container.innerHTML = "";
-
-  albums.forEach(album => {
-
-    const artist =
-      artists.find(a => a.id === album.artist_id);
-
-    const artistName =
-      artist ? artist.name : "Unknown Artist";
-
-    const cover =
-      album.cover_url ||
-      "https://via.placeholder.com/500x500?text=Album";
-
-    const type =
-      album.type === "ep" ? "EP" : "Album";
-
-    const card =
-      document.createElement("div");
-
-    card.className = "song-card";
-
-    card.innerHTML = `
-
-      <img
-        class="song-cover"
-        src="${cover}"
-        alt="${escapeHtml(album.title)}">
-
-      <div class="song-info">
-
-        <h3>${escapeHtml(album.title)}</h3>
-
-        <div class="muted">
-          ${escapeHtml(artistName)}
-        </div>
-
-        <div class="muted">
-          ${type}
-        </div>
-
-        <div class="muted">
-          ${album.release_date || "Release date not set"}
-        </div>
-
-        <div class="actions">
-
-          <button
-            class="secondary"
-            onclick="editAlbum('${album.id}')">
-            Edit
-          </button>
-
-          <button
-            class="danger"
-            onclick="deleteAlbum('${album.id}')">
-            Delete
-          </button>
-
-        </div>
-
-      </div>
-    `;
-
-    container.appendChild(card);
-
-  });
-
-}
-
-
-async function saveAlbum() {
-
-  const id =
-    document.getElementById("albumId").value;
-
-  const title =
-    document.getElementById("albumTitle").value.trim();
-
-  const artistId =
-    document.getElementById("albumArtist").value;
-
-  const type =
-    document.getElementById("albumType").value;
-
-  const releaseDate =
-    document.getElementById("albumReleaseDate").value || null;
-
-  const description =
-    document.getElementById("albumDescription").value.trim();
-
-  if (!title) {
-
-    showStatus(
-      "albumStatus",
-      "Album/EP title is required.",
-      "error"
-    );
-
-    return;
-  }
-
-  if (!artistId) {
-
-    showStatus(
-      "albumStatus",
-      "Please select an artist.",
-      "error"
-    );
-
-    return;
-  }
-
-
-  let coverUrl = null;
-
-  if (id) {
-
-    const existing =
-      albums.find(a => a.id === id);
-
-    if (existing) {
-      coverUrl = existing.cover_url;
-    }
-
-  }
-
-
-  const coverFile =
-    document.getElementById("albumCover").files[0];
-
-  if (coverFile) {
-
-    const fileName =
-      Date.now() + "-" +
-      coverFile.name.replace(/\s+/g, "-");
-
-    const { error } =
-      await client.storage
-        .from("covers")
-        .upload(fileName, coverFile);
-
-    if (error) {
-
-      showStatus(
-        "albumStatus",
-        "Cover upload failed: " + error.message,
-        "error"
-      );
-
-      return;
-    }
-
-    const { data } =
-      client.storage
-        .from("covers")
-        .getPublicUrl(fileName);
-
-    coverUrl = data.publicUrl;
-
-  }
-
-
-  const payload = {
-
-    title,
-    slug: makeSlug(title),
-    artist_id: artistId,
-    type,
-    description,
-    release_date: releaseDate
-
-  };
-
-
-  if (coverUrl) {
-    payload.cover_url = coverUrl;
-  }
-
-
-  let result;
-
-  if (id) {
-
-    result = await client
-      .from("albums")
-      .update(payload)
-      .eq("id", id);
-
-  } else {
-
-    result = await client
-      .from("albums")
-      .insert(payload);
-
-  }
-
-
-  if (result.error) {
-
-    showStatus(
-      "albumStatus",
-      result.error.message,
-      "error"
-    );
-
-    return;
-  }
-
-
-  showStatus(
-    "albumStatus",
-    id
-      ? "Album/EP updated successfully."
-      : "Album/EP created successfully.",
-    "success"
+  const SUPABASE_URL = "https://dcjeqalpzuewlholdbqc.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_LZkkwMKMxbEMi3hKY-op4g_gHSQO529";
+
+  const client = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
   );
 
 
-  resetAlbumForm();
-
-  await loadAlbums();
-  await loadCounts();
-
-}
-
-
-function editAlbum(id) {
-
-  const album =
-    albums.find(a => a.id === id);
-
-  if (!album) return;
-
-  document.getElementById("albumId").value =
-    album.id;
-
-  document.getElementById("albumTitle").value =
-    album.title || "";
-
-  document.getElementById("albumArtist").value =
-    album.artist_id || "";
-
-  document.getElementById("albumType").value =
-    album.type || "album";
-
-  document.getElementById("albumReleaseDate").value =
-    album.release_date || "";
-
-  document.getElementById("albumDescription").value =
-    album.description || "";
-
-  document.getElementById("albumFormTitle").textContent =
-    "Edit Album / EP";
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-}
-
-
-async function deleteAlbum(id) {
-
-  if (!confirm("Delete this album/EP?")) return;
-
-  const { error } =
-    await client
-      .from("albums")
-      .delete()
-      .eq("id", id);
-
-  if (error) {
-
-    alert(error.message);
-    return;
-  }
-
-  await loadAlbums();
-  await loadCounts();
-
-}
-
-
-function resetAlbumForm() {
-
-  document.getElementById("albumId").value = "";
-
-  document.getElementById("albumTitle").value = "";
-
-  document.getElementById("albumArtist").value = "";
-
-  document.getElementById("albumType").value = "album";
-
-  document.getElementById("albumReleaseDate").value = "";
-
-  document.getElementById("albumDescription").value = "";
-
-  document.getElementById("albumCover").value = "";
-
-  document.getElementById("albumFormTitle").textContent =
-    "Create Album / EP";
-
-}  
-
-
-function populateAlbumSelect() {
-
-  const select = document.getElementById("songAlbum");
-
-  select.innerHTML =
-    '<option value="">Single / No Album</option>';
-
-  albums.forEach(album => {
-
-    const option = document.createElement("option");
-
-    option.value = album.id;
-    option.textContent = album.title;
-
-    select.appendChild(option);
-
-  });
-}
-
-
-/* SONGS */
-
-async function loadSongs() {
-
-  const { data, error } = await client
-    .from("songs")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-
-    showStatus(
-      "songStatus",
-      "Error loading songs: " + error.message,
-      "error"
-    );
-
-    return;
-  }
-
-  songs = data || [];
-
-  renderSongs();
-
-}
-
-
-function renderSongs() {
-
-  const container = document.getElementById("songList");
-
-  const search =
-    document.getElementById("songSearch").value.toLowerCase();
-
-  const filtered = songs.filter(song =>
-    song.title.toLowerCase().includes(search)
-  );
-
-  container.innerHTML = "";
-
-  filtered.forEach(song => {
-
-    const artist =
-      artists.find(a => a.id === song.artist_id);
-
-    const artistName =
-      artist ? artist.name : "Unknown Artist";
-
-    const cover =
-      song.cover_url ||
-      "https://via.placeholder.com/500x500?text=Music";
-
-    const card = document.createElement("div");
-
-    card.className = "song-card";
-
-    card.innerHTML = `
-
-      <img class="song-cover"
-        src="${cover}"
-        alt="${escapeHtml(song.title)}">
-
-      <div class="song-info">
-
-        <h3>${escapeHtml(song.title)}</h3>
-
-        <div class="muted">
-          ${escapeHtml(artistName)}
-        </div>
-
-        <div class="muted">
-          ${escapeHtml(song.genre || "Genre not set")}
-        </div>
-
-        <div class="muted">
-          Plays: ${song.plays || 0} · Downloads: ${song.downloads || 0}
-        </div>
-
-        ${
-          song.audio_url
-          ?
-          `<audio controls src="${song.audio_url}"></audio>`
-          :
-          ""
-        }
-
-        <div class="actions">
-
-          <button class="secondary"
-            onclick="editSong('${song.id}')">
-            Edit
-          </button>
-
-          <button class="danger"
-            onclick="deleteSong('${song.id}')">
-            Delete
-          </button>
-
-        </div>
-
-      </div>
-    `;
-
-    container.appendChild(card);
-
-  });
-
-}
-
-
-async function saveSong() {
-
-  const id =
-    document.getElementById("songId").value;
-
-  const title =
-    document.getElementById("songTitle").value.trim();
-
-  const artistId =
-    document.getElementById("songArtist").value;
-
-  if (!title) {
-
-    showStatus(
-      "songStatus",
-      "Song title is required.",
-      "error"
-    );
-
-    return;
-  }
-
-  if (!artistId) {
-
-    showStatus(
-      "songStatus",
-      "Please select an artist.",
-      "error"
-    );
-
-    return;
+  // ==================== HELPERS ====================
+
+  function escapeHtml(value) {
+    if (value === null || value === undefined) return "";
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
 
-  const albumId =
-    document.getElementById("songAlbum").value || null;
-
-  const genre =
-    document.getElementById("songGenre").value.trim();
-
-  const releaseDate =
-    document.getElementById("songReleaseDate").value || null;
-
-  const lyrics =
-    document.getElementById("songLyrics").value.trim();
-
-  const featured =
-    document.getElementById("songFeatured").checked;
-
-
-  let audioUrl = null;
-  let coverUrl = null;
-
-
-  if (id) {
-
-    const existing =
-      songs.find(song => song.id === id);
-
-    if (existing) {
-
-      audioUrl = existing.audio_url;
-      coverUrl = existing.cover_url;
-
-    }
-
-  }
-
-
-  /* AUDIO UPLOAD */
-
-  const audioFile =
-    document.getElementById("songAudio").files[0];
-
-  if (audioFile) {
-
-    const fileName =
-      Date.now() + "-" +
-      audioFile.name.replace(/\s+/g, "-");
-
-    const { error } =
-      await client.storage
-        .from("music")
-        .upload(fileName, audioFile);
-
-    if (error) {
-
-      showStatus(
-        "songStatus",
-        "Audio upload failed: " + error.message,
-        "error"
-      );
-
-      return;
-    }
-
-    const { data } =
-      client.storage
-        .from("music")
-        .getPublicUrl(fileName);
-
-    audioUrl = data.publicUrl;
-
-  }
-
-
-  /* COVER UPLOAD */
-
-  const coverFile =
-    document.getElementById("songCover").files[0];
-
-  if (coverFile) {
-
-    const fileName =
-      Date.now() + "-" +
-      coverFile.name.replace(/\s+/g, "-");
-
-    const { error } =
-      await client.storage
-        .from("covers")
-        .upload(fileName, coverFile);
-
-    if (error) {
-
-      showStatus(
-        "songStatus",
-        "Cover upload failed: " + error.message,
-        "error"
-      );
-
-      return;
-    }
-
-    const { data } =
-      client.storage
-        .from("covers")
-        .getPublicUrl(fileName);
-
-    coverUrl = data.publicUrl;
-
-  }
-
-
-  const payload = {
-
-    title,
-    slug: makeSlug(title),
-    artist_id: artistId,
-    album_id: albumId,
-    genre,
-    lyrics,
-    release_date: releaseDate,
-    featured
-
-  };
-
-
-  if (audioUrl) {
-    payload.audio_url = audioUrl;
-  }
-
-  if (coverUrl) {
-    payload.cover_url = coverUrl;
-  }
-
-
-  let result;
-
-
-  if (id) {
-
-    result = await client
-      .from("songs")
-      .update(payload)
-      .eq("id", id);
-
-  } else {
-
-    result = await client
-      .from("songs")
-      .insert(payload);
-
-  }
-
-
-  if (result.error) {
-
-    showStatus(
-      "songStatus",
-      result.error.message,
-      "error"
-    );
-
-    return;
-  }
-
-
-  showStatus(
-    "songStatus",
-    id ? "Song updated successfully." : "Song uploaded successfully.",
-    "success"
-  );
-
-
-  resetSongForm();
-
-  await loadSongs();
-  await loadCounts();
-
-}
-
-
-function editSong(id) {
-
-  const song =
-    songs.find(s => s.id === id);
-
-  if (!song) return;
-
-
-  document.getElementById("songId").value =
-    song.id;
-
-  document.getElementById("songTitle").value =
-    song.title || "";
-
-  document.getElementById("songArtist").value =
-    song.artist_id || "";
-
-  document.getElementById("songAlbum").value =
-    song.album_id || "";
-
-  document.getElementById("songGenre").value =
-    song.genre || "";
-
-  document.getElementById("songReleaseDate").value =
-    song.release_date || "";
-
-  document.getElementById("songLyrics").value =
-    song.lyrics || "";
-
-  document.getElementById("songFeatured").checked =
-    !!song.featured;
-
-
-  document.getElementById("songFormTitle").textContent =
-    "Edit Song";
-
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-}
-
-
-async function deleteSong(id) {
-
-  if (!confirm("Delete this song?")) return;
-
-  const { error } =
-    await client
-      .from("songs")
-      .delete()
-      .eq("id", id);
-
-  if (error) {
-
-    alert(error.message);
-    return;
-  }
-
-  await loadSongs();
-  await loadCounts();
-
-}
-
-
-function resetSongForm() {
-
-  document.getElementById("songId").value = "";
-
-  document.getElementById("songTitle").value = "";
-
-  document.getElementById("songArtist").value = "";
-
-  document.getElementById("songAlbum").value = "";
-
-  document.getElementById("songGenre").value = "";
-
-  document.getElementById("songReleaseDate").value = "";
-
-  document.getElementById("songLyrics").value = "";
-
-  document.getElementById("songFeatured").checked = false;
-
-  document.getElementById("songAudio").value = "";
-
-  document.getElementById("songCover").value = "";
-
-  document.getElementById("songFormTitle").textContent =
-    "Upload Song";
-
-}
-
-
-/* STATUS */
-
-function showStatus(id, message, type) {
-
-  const box =
-    document.getElementById(id);
-
-  box.textContent = message;
-
-  box.className =
-    "status show " + type;
-
-}
-
-
-/* SECURITY HELPER */
-
-function escapeHtml(text) {
-
-  return String(text || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
-}
-
-
-/* START */
-
-checkAuth();
-
-// ===============================
-// NEWS MANAGER
-// ===============================
-
-let news = [];
-
-async function loadNews() {
-
-  const { data, error } = await client
-    .from("news")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-
-    showStatus(
-      "newsStatus",
-      "Error loading news: " + error.message,
-      "error"
-    );
-
-    return;
-  }
-
-  news = data || [];
-
-  renderNews();
-}
-
-
-function renderNews() {
-
-  const container = document.getElementById("newsList");
-
-  if (!container) return;
-
-  if (news.length === 0) {
-
-    container.innerHTML = "<p>No news articles yet.</p>";
-
-    return;
-  }
-
-  container.innerHTML = "";
-
-  news.forEach(article => {
-
-    const card = document.createElement("div");
-
-    card.style.cssText = `
-      border:1px solid #333;
-      padding:20px;
-      margin-bottom:15px;
-      border-radius:10px;
-      background:#111;
-    `;
-
-    card.innerHTML = `
-
-      <h3>${article.title}</h3>
-
-      <p>
-        ${article.excerpt || ""}
-      </p>
-
-      <small>
-        ${article.author || "Leshky Records"}
-      </small>
-
-      <br><br>
-
-      <button onclick="editNews('${article.id}')">
-        Edit
-      </button>
-
-      <button onclick="deleteNews('${article.id}')">
-        Delete
-      </button>
-
-    `;
-
-    container.appendChild(card);
-
-  });
-}
-
-
-document
-  .getElementById("newsForm")
-  ?.addEventListener("submit", saveNews);
-
-
-async function saveNews(event) {
-
-  event.preventDefault();
-
-  const id =
-    document.getElementById("newsId").value;
-
-  const title =
-    document.getElementById("newsTitle").value.trim();
-
-  const author =
-    document.getElementById("newsAuthor").value.trim();
-
-  const publishedAt =
-    document.getElementById("newsPublishedAt").value;
-
-  const excerpt =
-    document.getElementById("newsExcerpt").value.trim();
-
-  const content =
-    document.getElementById("newsContent").value.trim();
-
-  const imageFile =
-    document.getElementById("newsImage").files[0];
-
-  if (!title || !content) {
-
-    showStatus(
-      "newsStatus",
-      "Title and content are required.",
-      "error"
-    );
-
-    return;
-  }
-
-  let imageUrl = null;
-
-  // Upload image if selected
-  if (imageFile) {
-
-    const fileName =
-      Date.now() + "-" + imageFile.name;
-
-    const { error: uploadError } =
-      await client.storage
-        .from("gallery")
-        .upload(fileName, imageFile);
-
-    if (uploadError) {
-
-      showStatus(
-        "newsStatus",
-        "Image upload failed: " +
-        uploadError.message,
-        "error"
-      );
-
-      return;
-    }
-
-    const { data: publicUrlData } =
-      client.storage
-        .from("gallery")
-        .getPublicUrl(fileName);
-
-    imageUrl =
-      publicUrlData.publicUrl;
-  }
-
-
-  const slug =
-    title
+  function makeSlug(text) {
+    return String(text || "")
       .toLowerCase()
       .trim()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
-
-
-  const newsData = {
-
-    title: title,
-
-    slug: slug,
-
-    excerpt: excerpt,
-
-    content: content,
-
-    author:
-      author || "Leshky Records",
-
-    published_at:
-      publishedAt || new Date().toISOString()
-
-  };
-
-
-  if (imageUrl) {
-
-    newsData.image_url = imageUrl;
-
   }
 
 
-  let result;
+  function setStatus(id, message, type = "") {
+    const element = document.getElementById(id);
 
+    if (!element) return;
 
-  if (id) {
-
-    result =
-      await client
-        .from("news")
-        .update(newsData)
-        .eq("id", id);
-
-  } else {
-
-    result =
-      await client
-        .from("news")
-        .insert([newsData]);
-
+    element.textContent = message;
+    element.className = "status " + type;
   }
 
 
-  if (result.error) {
+  function formatDate(date) {
+    if (!date) return "";
 
-    showStatus(
-      "newsStatus",
-      "Error saving news: " +
-      result.error.message,
-      "error"
+    const d = new Date(date);
+
+    if (isNaN(d.getTime())) return date;
+
+    return d.toLocaleDateString();
+  }
+
+
+  function formatDateTime(date, time) {
+    let result = formatDate(date);
+
+    if (time) {
+      result += " • " + time;
+    }
+
+    return result;
+  }
+
+
+  // ==================== AUTH ====================
+
+  async function checkAuth() {
+    const {
+      data,
+      error
+    } = await client.auth.getSession();
+
+    if (error || !data.session) {
+      window.location.href = "admin.html";
+      return;
+    }
+
+    await loadEverything();
+    await loadNews();
+    await loadEvents();
+    await loadMedia();
+    await loadSettings();
+  }
+
+
+  async function logout() {
+    await client.auth.signOut();
+    window.location.href = "admin.html";
+  }
+
+
+  // ==================== NAVIGATION ====================
+
+  function showSection(id, button) {
+
+    document.querySelectorAll(".section").forEach(section => {
+      section.classList.remove("active");
+    });
+
+    const target = document.getElementById(id);
+
+    if (target) {
+      target.classList.add("active");
+    }
+
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    if (button) {
+      button.classList.add("active");
+    }
+  }
+
+
+  // ==================== LOAD EVERYTHING ====================
+
+  async function loadEverything() {
+    await loadArtists();
+    await loadAlbums();
+    await loadSongs();
+    await loadCounts();
+  }
+
+
+  // ==================== COUNTS ====================
+
+  async function loadCounts() {
+
+    const artistResult = await client
+      .from("artists")
+      .select("*", { count: "exact", head: true });
+
+    const albumResult = await client
+      .from("albums")
+      .select("*", { count: "exact", head: true });
+
+    const songResult = await client
+      .from("songs")
+      .select("*", { count: "exact", head: true });
+
+    const newsResult = await client
+      .from("news")
+      .select("*", { count: "exact", head: true });
+
+
+    document.getElementById("artistCount").textContent =
+      artistResult.count || 0;
+
+    document.getElementById("albumCount").textContent =
+      albumResult.count || 0;
+
+    document.getElementById("songCount").textContent =
+      songResult.count || 0;
+
+    document.getElementById("newsCount").textContent =
+      newsResult.count || 0;
+  }
+
+
+  // =========================================================
+  // ARTISTS
+  // =========================================================
+
+  let artists = [];
+
+
+  async function loadArtists() {
+
+    const {
+      data,
+      error
+    } = await client
+      .from("artists")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error(error);
+
+      document.getElementById("artistsList").innerHTML =
+        '<div class="empty">Unable to load artists.</div>';
+
+      return;
+    }
+
+    artists = data || [];
+
+    renderArtists();
+    populateArtistSelects();
+  }
+
+
+  function renderArtists() {
+
+    const list = document.getElementById("artistsList");
+
+    const search =
+      document.getElementById("artistSearch").value
+        .toLowerCase()
+        .trim();
+
+    const filtered = artists.filter(artist => {
+
+      const name = (artist.name || "").toLowerCase();
+      const genre = (artist.genre || "").toLowerCase();
+
+      return (
+        name.includes(search) ||
+        genre.includes(search)
+      );
+    });
+
+
+    if (!filtered.length) {
+      list.innerHTML =
+        '<div class="empty">No artists found.</div>';
+
+      return;
+    }
+
+
+    list.innerHTML = filtered.map(artist => {
+
+      const photo = artist.photo_url
+        ? `<img class="thumb" src="${escapeHtml(artist.photo_url)}" alt="">`
+        : `<div class="thumb"></div>`;
+
+
+      return `
+        <div class="list-item">
+
+          ${photo}
+
+          <div class="list-info">
+
+            <h4>${escapeHtml(artist.name)}</h4>
+
+            <p>
+              ${escapeHtml(artist.genre || "Genre not specified")}
+            </p>
+
+            <p>
+              ${escapeHtml(artist.bio || "")}
+            </p>
+
+          </div>
+
+          <div class="actions">
+
+            <button
+              class="btn btn-small btn-gold"
+              onclick="editArtist('${artist.id}')"
+            >
+              Edit
+            </button>
+
+            <button
+              class="btn btn-small btn-danger"
+              onclick="deleteArtist('${artist.id}')"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+  }
+
+
+  function populateArtistSelects() {
+
+    const albumArtist =
+      document.getElementById("albumArtist");
+
+    const songArtist =
+      document.getElementById("songArtist");
+
+
+    const options = `
+      <option value="">Select artist</option>
+      ${
+        artists.map(artist => `
+          <option value="${artist.id}">
+            ${escapeHtml(artist.name)}
+          </option>
+        `).join("")
+      }
+    `;
+
+
+    albumArtist.innerHTML = options;
+    songArtist.innerHTML = options;
+  }
+
+
+  async function saveArtist() {
+
+    const id =
+      document.getElementById("artistId").value;
+
+    const name =
+      document.getElementById("artistName").value.trim();
+
+    const genre =
+      document.getElementById("artistGenre").value.trim();
+
+    const bio =
+      document.getElementById("artistBio").value.trim();
+
+    const file =
+      document.getElementById("artistPhoto").files[0];
+
+
+    if (!name) {
+      setStatus(
+        "artistStatus",
+        "Artist name is required.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    setStatus(
+      "artistStatus",
+      "Saving artist..."
     );
 
-    return;
+
+    try {
+
+      let photoUrl = null;
+
+
+      if (file) {
+
+        const safeName =
+          file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+
+        const filePath =
+          Date.now() + "-" + safeName;
+
+
+        const {
+          error: uploadError
+        } = await client.storage
+          .from("artists")
+          .upload(filePath, file);
+
+
+        if (uploadError) {
+          throw uploadError;
+        }
+
+
+        const {
+          data
+        } = client.storage
+          .from("artists")
+          .getPublicUrl(filePath);
+
+
+        photoUrl = data.publicUrl;
+      }
+
+
+      const payload = {
+        name,
+        slug: id
+          ? makeSlug(name)
+          : makeSlug(name) + "-" + Date.now(),
+        genre,
+        bio
+      };
+
+
+      if (photoUrl) {
+        payload.photo_url = photoUrl;
+      }
+
+
+      if (id) {
+
+        const {
+          error
+        } = await client
+          .from("artists")
+          .update(payload)
+          .eq("id", id);
+
+        if (error) throw error;
+
+      } else {
+
+        const {
+          error
+        } = await client
+          .from("artists")
+          .insert(payload);
+
+        if (error) throw error;
+      }
+
+
+      clearArtistForm();
+
+      await loadArtists();
+      await loadCounts();
+
+
+      setStatus(
+        "artistStatus",
+        "Artist saved successfully.",
+        "success"
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      setStatus(
+        "artistStatus",
+        "Error: " + error.message,
+        "error"
+      );
+    }
   }
 
 
-  showStatus(
-    "newsStatus",
-    "News saved successfully!",
-    "success"
-  );
+  function editArtist(id) {
+
+    const artist =
+      artists.find(item => String(item.id) === String(id));
+
+    if (!artist) return;
 
 
-  resetNewsForm();
+    document.getElementById("artistId").value =
+      artist.id;
 
-  await loadNews();
+    document.getElementById("artistName").value =
+      artist.name || "";
 
-}
+    document.getElementById("artistGenre").value =
+      artist.genre || "";
 
-
-function editNews(id) {
-
-  const article =
-    news.find(item => item.id === id);
-
-  if (!article) return;
+    document.getElementById("artistBio").value =
+      artist.bio || "";
 
 
-  document.getElementById("newsId").value =
-    article.id;
+    showSection(
+      "artists",
+      document.querySelectorAll(".nav-btn")[1]
+    );
 
-  document.getElementById("newsTitle").value =
-    article.title || "";
-
-  document.getElementById("newsAuthor").value =
-    article.author || "";
-
-  document.getElementById("newsExcerpt").value =
-    article.excerpt || "";
-
-  document.getElementById("newsContent").value =
-    article.content || "";
-
-
-  if (article.published_at) {
-
-    document.getElementById("newsPublishedAt").value =
-      new Date(article.published_at)
-        .toISOString()
-        .slice(0, 16);
-
-  }
-
-}
-
-
-async function deleteNews(id) {
-
-  if (!confirm("Delete this news article?")) {
-
-    return;
-
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   }
 
 
-  const { error } =
-    await client
+  async function deleteArtist(id) {
+
+    if (!confirm("Delete this artist?")) return;
+
+
+    const {
+      error
+    } = await client
+      .from("artists")
+      .delete()
+      .eq("id", id);
+
+
+    if (error) {
+      alert("Error: " + error.message);
+      return;
+    }
+
+
+    await loadArtists();
+    await loadAlbums();
+    await loadSongs();
+    await loadCounts();
+  }
+
+
+  function clearArtistForm() {
+
+    document.getElementById("artistId").value = "";
+    document.getElementById("artistName").value = "";
+    document.getElementById("artistGenre").value = "";
+    document.getElementById("artistBio").value = "";
+    document.getElementById("artistPhoto").value = "";
+
+    setStatus("artistStatus", "");
+  }
+
+
+  // =========================================================
+  // ALBUMS
+  // =========================================================
+
+  let albums = [];
+
+
+  async function loadAlbums() {
+
+    const {
+      data,
+      error
+    } = await client
+      .from("albums")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+
+    if (error) {
+      console.error(error);
+
+      document.getElementById("albumsList").innerHTML =
+        '<div class="empty">Unable to load albums.</div>';
+
+      return;
+    }
+
+
+    albums = data || [];
+
+    renderAlbums();
+    populateAlbumSelect();
+  }
+
+
+  function populateAlbumSelect() {
+
+    const select =
+      document.getElementById("songAlbum");
+
+
+    select.innerHTML = `
+      <option value="">Select album / EP</option>
+
+      ${
+        albums.map(album => `
+          <option value="${album.id}">
+            ${escapeHtml(album.title)}
+          </option>
+        `).join("")
+      }
+    `;
+  }
+
+
+  function renderAlbums() {
+
+    const list =
+      document.getElementById("albumsList");
+
+
+    if (!albums.length) {
+      list.innerHTML =
+        '<div class="empty">No albums or EPs found.</div>';
+
+      return;
+    }
+
+
+    list.innerHTML = albums.map(album => {
+
+      const artist =
+        artists.find(item =>
+          String(item.id) === String(album.artist_id)
+        );
+
+
+      const cover = album.cover_url
+        ? `<img class="thumb" src="${escapeHtml(album.cover_url)}" alt="">`
+        : `<div class="thumb"></div>`;
+
+
+      return `
+        <div class="list-item">
+
+          ${cover}
+
+          <div class="list-info">
+
+            <h4>${escapeHtml(album.title)}</h4>
+
+            <p>
+              ${escapeHtml(album.type || "Album")}
+              ${artist ? " • " + escapeHtml(artist.name) : ""}
+            </p>
+
+            <p>
+              Release:
+              ${escapeHtml(formatDate(album.release_date))}
+            </p>
+
+          </div>
+
+          <div class="actions">
+
+            <button
+              class="btn btn-small btn-gold"
+              onclick="editAlbum('${album.id}')"
+            >
+              Edit
+            </button>
+
+            <button
+              class="btn btn-small btn-danger"
+              onclick="deleteAlbum('${album.id}')"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+  }
+
+
+  async function saveAlbum() {
+
+    const id =
+      document.getElementById("albumId").value;
+
+    const title =
+      document.getElementById("albumTitle").value.trim();
+
+    const artistId =
+      document.getElementById("albumArtist").value;
+
+    const type =
+      document.getElementById("albumType").value;
+
+    const releaseDate =
+      document.getElementById("albumReleaseDate").value;
+
+    const file =
+      document.getElementById("albumCover").files[0];
+
+
+    if (!title || !artistId) {
+
+      setStatus(
+        "albumStatus",
+        "Title and artist are required.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    setStatus(
+      "albumStatus",
+      "Saving album..."
+    );
+
+
+    try {
+
+      let coverUrl = null;
+
+
+      if (file) {
+
+        const safeName =
+          file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+
+        const filePath =
+          Date.now() + "-" + safeName;
+
+
+        const {
+          error: uploadError
+        } = await client.storage
+          .from("covers")
+          .upload(filePath, file);
+
+
+        if (uploadError) {
+          throw uploadError;
+        }
+
+
+        const {
+          data
+        } = client.storage
+          .from("covers")
+          .getPublicUrl(filePath);
+
+
+        coverUrl = data.publicUrl;
+      }
+
+
+      const payload = {
+        title,
+        slug: id
+          ? makeSlug(title)
+          : makeSlug(title) + "-" + Date.now(),
+        artist_id: artistId,
+        type,
+        release_date: releaseDate || null
+      };
+
+
+      if (coverUrl) {
+        payload.cover_url = coverUrl;
+      }
+
+
+      if (id) {
+
+        const {
+          error
+        } = await client
+          .from("albums")
+          .update(payload)
+          .eq("id", id);
+
+        if (error) throw error;
+
+      } else {
+
+        const {
+          error
+        } = await client
+          .from("albums")
+          .insert(payload);
+
+        if (error) throw error;
+      }
+
+
+      clearAlbumForm();
+
+      await loadAlbums();
+      await loadSongs();
+      await loadCounts();
+
+
+      setStatus(
+        "albumStatus",
+        "Album / EP saved successfully.",
+        "success"
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      setStatus(
+        "albumStatus",
+        "Error: " + error.message,
+        "error"
+      );
+    }
+  }
+
+
+  function editAlbum(id) {
+
+    const album =
+      albums.find(item =>
+        String(item.id) === String(id)
+      );
+
+    if (!album) return;
+
+
+    document.getElementById("albumId").value =
+      album.id;
+
+    document.getElementById("albumTitle").value =
+      album.title || "";
+
+    document.getElementById("albumArtist").value =
+      album.artist_id || "";
+
+    document.getElementById("albumType").value =
+      album.type || "Album";
+
+    document.getElementById("albumReleaseDate").value =
+      album.release_date || "";
+
+    showSection(
+      "albums",
+      document.querySelectorAll(".nav-btn")[3]
+    );
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+
+  async function deleteAlbum(id) {
+
+    if (!confirm("Delete this album / EP?")) return;
+
+
+    const {
+      error
+    } = await client
+      .from("albums")
+      .delete()
+      .eq("id", id);
+
+
+    if (error) {
+      alert("Error: " + error.message);
+      return;
+    }
+
+
+    await loadAlbums();
+    await loadSongs();
+    await loadCounts();
+  }
+
+
+  function clearAlbumForm() {
+
+    document.getElementById("albumId").value = "";
+    document.getElementById("albumTitle").value = "";
+    document.getElementById("albumArtist").value = "";
+    document.getElementById("albumType").value = "Album";
+    document.getElementById("albumReleaseDate").value = "";
+    document.getElementById("albumCover").value = "";
+
+    setStatus("albumStatus", "");
+  }
+
+
+  // =========================================================
+  // SONGS
+  // =========================================================
+
+  let songs = [];
+
+
+  async function loadSongs() {
+
+    const {
+      data,
+      error
+    } = await client
+      .from("songs")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+
+    if (error) {
+      console.error(error);
+
+      document.getElementById("songsList").innerHTML =
+        '<div class="empty">Unable to load songs.</div>';
+
+      return;
+    }
+
+
+    songs = data || [];
+
+    renderSongs();
+  }
+
+
+  function renderSongs() {
+
+    const list =
+      document.getElementById("songsList");
+
+
+    if (!songs.length) {
+      list.innerHTML =
+        '<div class="empty">No songs found.</div>';
+
+      return;
+    }
+
+
+    list.innerHTML = songs.map(song => {
+
+      const artist =
+        artists.find(item =>
+          String(item.id) === String(song.artist_id)
+        );
+
+
+      const album =
+        albums.find(item =>
+          String(item.id) === String(song.album_id)
+        );
+
+
+      const cover = song.cover_url
+        ? `<img class="thumb" src="${escapeHtml(song.cover_url)}" alt="">`
+        : `<div class="thumb"></div>`;
+
+
+      const audio =
+        song.audio_url
+          ? `
+            <audio controls>
+              <source
+                src="${escapeHtml(song.audio_url)}"
+                type="audio/mpeg"
+              >
+            </audio>
+          `
+          : "";
+
+
+      return `
+        <div class="list-item">
+
+          ${cover}
+
+          <div class="list-info">
+
+            <h4>${escapeHtml(song.title)}</h4>
+
+            <p>
+              ${artist
+                ? escapeHtml(artist.name)
+                : "Unknown artist"
+              }
+
+              ${
+                album
+                  ? " • " + escapeHtml(album.title)
+                  : ""
+              }
+            </p>
+
+            ${audio}
+
+          </div>
+
+          <div class="actions">
+
+            <button
+              class="btn btn-small btn-gold"
+              onclick="editSong('${song.id}')"
+            >
+              Edit
+            </button>
+
+            <button
+              class="btn btn-small btn-danger"
+              onclick="deleteSong('${song.id}')"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+  }
+
+
+  async function saveSong() {
+
+    const id =
+      document.getElementById("songId").value;
+
+    const title =
+      document.getElementById("songTitle").value.trim();
+
+    const artistId =
+      document.getElementById("songArtist").value;
+
+    const albumId =
+      document.getElementById("songAlbum").value;
+
+    const audioFile =
+      document.getElementById("songFile").files[0];
+
+    const coverFile =
+      document.getElementById("songCover").files[0];
+
+
+    if (!title || !artistId) {
+
+      setStatus(
+        "songStatus",
+        "Song title and artist are required.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    setStatus(
+      "songStatus",
+      "Saving song..."
+    );
+
+
+    try {
+
+      let audioUrl = null;
+      let coverUrl = null;
+
+
+      if (audioFile) {
+
+        const safeName =
+          audioFile.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+
+        const filePath =
+          Date.now() + "-" + safeName;
+
+
+        const {
+          error: uploadError
+        } = await client.storage
+          .from("music")
+          .upload(filePath, audioFile);
+
+
+        if (uploadError) {
+          throw uploadError;
+        }
+
+
+        const {
+          data
+        } = client.storage
+          .from("music")
+          .getPublicUrl(filePath);
+
+
+        audioUrl = data.publicUrl;
+      }
+
+
+      if (coverFile) {
+
+        const safeName =
+          coverFile.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+
+        const filePath =
+          Date.now() + "-cover-" + safeName;
+
+
+        const {
+          error: uploadError
+        } = await client.storage
+          .from("covers")
+          .upload(filePath, coverFile);
+
+
+        if (uploadError) {
+          throw uploadError;
+        }
+
+
+        const {
+          data
+        } = client.storage
+          .from("covers")
+          .getPublicUrl(filePath);
+
+
+        coverUrl = data.publicUrl;
+      }
+
+
+      const payload = {
+        title,
+        slug: id
+          ? makeSlug(title)
+          : makeSlug(title) + "-" + Date.now(),
+        artist_id: artistId,
+        album_id: albumId || null
+      };
+
+
+      if (audioUrl) {
+        payload.audio_url = audioUrl;
+      }
+
+      if (coverUrl) {
+        payload.cover_url = coverUrl;
+      }
+
+
+      if (id) {
+
+        const {
+          error
+        } = await client
+          .from("songs")
+          .update(payload)
+          .eq("id", id);
+
+        if (error) throw error;
+
+      } else {
+
+        if (!audioUrl) {
+          throw new Error(
+            "Please select an audio file for a new song."
+          );
+        }
+
+        const {
+          error
+        } = await client
+          .from("songs")
+          .insert(payload);
+
+        if (error) throw error;
+      }
+
+
+      clearSongForm();
+
+      await loadSongs();
+      await loadCounts();
+
+
+      setStatus(
+        "songStatus",
+        "Song saved successfully.",
+        "success"
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      setStatus(
+        "songStatus",
+        "Error: " + error.message,
+        "error"
+      );
+    }
+  }
+
+
+  function editSong(id) {
+
+    const song =
+      songs.find(item =>
+        String(item.id) === String(id)
+      );
+
+    if (!song) return;
+
+
+    document.getElementById("songId").value =
+      song.id;
+
+    document.getElementById("songTitle").value =
+      song.title || "";
+
+    document.getElementById("songArtist").value =
+      song.artist_id || "";
+
+    document.getElementById("songAlbum").value =
+      song.album_id || "";
+
+
+    showSection(
+      "music",
+      document.querySelectorAll(".nav-btn")[2]
+    );
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+
+  async function deleteSong(id) {
+
+    if (!confirm("Delete this song?")) return;
+
+
+    const {
+      error
+    } = await client
+      .from("songs")
+      .delete()
+      .eq("id", id);
+
+
+    if (error) {
+      alert("Error: " + error.message);
+      return;
+    }
+
+
+    await loadSongs();
+    await loadCounts();
+  }
+
+
+  function clearSongForm() {
+
+    document.getElementById("songId").value = "";
+    document.getElementById("songTitle").value = "";
+    document.getElementById("songArtist").value = "";
+    document.getElementById("songAlbum").value = "";
+    document.getElementById("songFile").value = "";
+    document.getElementById("songCover").value = "";
+
+    setStatus("songStatus", "");
+  }
+
+
+  // =========================================================
+  // NEWS
+  // =========================================================
+
+  let newsItems = [];
+
+
+  async function loadNews() {
+
+    const {
+      data,
+      error
+    } = await client
+      .from("news")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+
+    if (error) {
+      console.error(error);
+
+      document.getElementById("newsList").innerHTML =
+        '<div class="empty">Unable to load news.</div>';
+
+      return;
+    }
+
+
+    newsItems = data || [];
+
+    renderNews();
+
+    document.getElementById("newsCount").textContent =
+      newsItems.length;
+  }
+
+
+  function renderNews() {
+
+    const list =
+      document.getElementById("newsList");
+
+
+    if (!newsItems.length) {
+      list.innerHTML =
+        '<div class="empty">No news articles found.</div>';
+
+      return;
+    }
+
+
+    list.innerHTML = newsItems.map(item => {
+
+      const image =
+        item.image_url
+          ? `<img class="thumb" src="${escapeHtml(item.image_url)}" alt="">`
+          : `<div class="thumb"></div>`;
+
+
+      return `
+        <div class="list-item">
+
+          ${image}
+
+          <div class="list-info">
+
+            <h4>${escapeHtml(item.title)}</h4>
+
+            <p>
+              ${escapeHtml(formatDate(item.published_at || item.created_at))}
+            </p>
+
+            <p>
+              ${escapeHtml(
+                (item.content || "").substring(0, 180)
+              )}
+            </p>
+
+          </div>
+
+          <div class="actions">
+
+            <button
+              class="btn btn-small btn-gold"
+              onclick="editNews('${item.id}')"
+            >
+              Edit
+            </button>
+
+            <button
+              class="btn btn-small btn-danger"
+              onclick="deleteNews('${item.id}')"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+  }
+
+
+  document
+    .getElementById("newsForm")
+    .addEventListener("submit", async function(event) {
+
+      event.preventDefault();
+
+      const id =
+        document.getElementById("newsId").value;
+
+      const title =
+        document.getElementById("newsTitle").value.trim();
+
+      const content =
+        document.getElementById("newsContent").value.trim();
+
+      const date =
+        document.getElementById("newsDate").value;
+
+      const imageFile =
+        document.getElementById("newsImage").files[0];
+
+
+      if (!title || !content) {
+
+        setStatus(
+          "newsStatus",
+          "Title and content are required.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      setStatus(
+        "newsStatus",
+        "Saving news..."
+      );
+
+
+      try {
+
+        let imageUrl = null;
+
+
+        if (imageFile) {
+
+          const safeName =
+            imageFile.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+
+          const filePath =
+            Date.now() + "-" + safeName;
+
+
+          const {
+            error: uploadError
+          } = await client.storage
+            .from("gallery")
+            .upload(filePath, imageFile);
+
+
+          if (uploadError) {
+            throw uploadError;
+          }
+
+
+          const {
+            data
+          } = client.storage
+            .from("gallery")
+            .getPublicUrl(filePath);
+
+
+          imageUrl = data.publicUrl;
+        }
+
+
+        const payload = {
+          title,
+          slug: id
+            ? makeSlug(title)
+            : makeSlug(title) + "-" + Date.now(),
+          content,
+          published_at: date || null
+        };
+
+
+        if (imageUrl) {
+          payload.image_url = imageUrl;
+        }
+
+
+        if (id) {
+
+          const {
+            error
+          } = await client
+            .from("news")
+            .update(payload)
+            .eq("id", id);
+
+          if (error) throw error;
+
+        } else {
+
+          const {
+            error
+          } = await client
+            .from("news")
+            .insert(payload);
+
+          if (error) throw error;
+        }
+
+
+        clearNewsForm();
+        await loadNews();
+        await loadCounts();
+
+
+        setStatus(
+          "newsStatus",
+          "News saved successfully.",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(error);
+
+        setStatus(
+          "newsStatus",
+          "Error: " + error.message,
+          "error"
+        );
+      }
+
+    });
+
+
+  function editNews(id) {
+
+    const item =
+      newsItems.find(news =>
+        String(news.id) === String(id)
+      );
+
+    if (!item) return;
+
+
+    document.getElementById("newsId").value =
+      item.id;
+
+    document.getElementById("newsTitle").value =
+      item.title || "";
+
+    document.getElementById("newsContent").value =
+      item.content || "";
+
+    document.getElementById("newsDate").value =
+      item.published_at
+        ? String(item.published_at).substring(0, 10)
+        : "";
+
+
+    showSection(
+      "news",
+      document.querySelectorAll(".nav-btn")[4]
+    );
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+
+  async function deleteNews(id) {
+
+    if (!confirm("Delete this news article?")) return;
+
+
+    const {
+      error
+    } = await client
       .from("news")
       .delete()
       .eq("id", id);
 
 
-  if (error) {
+    if (error) {
+      alert("Error: " + error.message);
+      return;
+    }
 
-    showStatus(
-      "newsStatus",
-      "Error deleting news: " +
-      error.message,
-      "error"
-    );
 
-    return;
-
+    await loadNews();
+    await loadCounts();
   }
 
 
-  showStatus(
-    "newsStatus",
-    "News deleted successfully.",
-    "success"
-  );
+  function clearNewsForm() {
 
+    document.getElementById("newsId").value = "";
+    document.getElementById("newsTitle").value = "";
+    document.getElementById("newsContent").value = "";
+    document.getElementById("newsDate").value = "";
+    document.getElementById("newsImage").value = "";
 
-  await loadNews();
-
-}
-
-
-function resetNewsForm() {
-
-  document
-    .getElementById("newsForm")
-    ?.reset();
-
-  document.getElementById("newsId").value = "";
-
-}
-
-
-// Load news when dashboard loads
-loadNews();
-  
-</script>
-
-</body>
-</html>
-
-<script>
-
-let events = [];
-
-async function loadEvents() {
-
-  const { data, error } = await client
-    .from("events")
-    .select("*")
-    .order("event_date", { ascending: true });
-
-  if (error) {
-
-    showStatus(
-      "eventStatus",
-      "Error loading events: " + error.message,
-      "error"
-    );
-
-    return;
-  }
-
-  events = data || [];
-
-  renderEvents();
-}
-
-
-function renderEvents() {
-
-  const container =
-    document.getElementById("eventList");
-
-  if (!container) return;
-
-  if (events.length === 0) {
-
-    container.innerHTML =
-      "<p>No events yet.</p>";
-
-    return;
-  }
-
-  container.innerHTML = "";
-
-  events.forEach(event => {
-
-    const card =
-      document.createElement("div");
-
-    card.style.cssText = `
-      border:1px solid #333;
-      padding:20px;
-      margin-bottom:15px;
-      border-radius:10px;
-      background:#111;
-    `;
-
-    card.innerHTML = `
-
-      ${
-        event.image_url
-          ? `
-            <img
-              src="${event.image_url}"
-              alt="${event.title}"
-              style="
-                width:100%;
-                max-width:300px;
-                height:180px;
-                object-fit:cover;
-                border-radius:10px;
-                margin-bottom:15px;
-              "
-            >
-          `
-          : ""
-      }
-
-      <h3>${event.title}</h3>
-
-      <p>
-        ${event.description || ""}
-      </p>
-
-      <p>
-        📍 ${event.location || "Location TBA"}
-      </p>
-
-      <p>
-        📅 ${
-          event.event_date
-            ? new Date(event.event_date)
-                .toLocaleString()
-            : ""
-        }
-      </p>
-
-      <button
-        onclick="editEvent('${event.id}')">
-        Edit
-      </button>
-
-      <button
-        onclick="deleteEvent('${event.id}')">
-        Delete
-      </button>
-
-    `;
-
-    container.appendChild(card);
-
-  });
-}
-
-
-document
-  .getElementById("eventForm")
-  ?.addEventListener(
-    "submit",
-    saveEvent
-  );
-
-
-async function saveEvent(event) {
-
-  event.preventDefault();
-
-  const id =
-    document.getElementById("eventId").value;
-
-  const title =
-    document
-      .getElementById("eventTitle")
-      .value
-      .trim();
-
-  const description =
-    document
-      .getElementById("eventDescription")
-      .value
-      .trim();
-
-  const location =
-    document
-      .getElementById("eventLocation")
-      .value
-      .trim();
-
-  const eventDate =
-    document
-      .getElementById("eventDate")
-      .value;
-
-  const ticketUrl =
-    document
-      .getElementById("eventTicketUrl")
-      .value
-      .trim();
-
-  const imageFile =
-    document
-      .getElementById("eventImage")
-      .files[0];
-
-
-  if (!title || !eventDate) {
-
-    showStatus(
-      "eventStatus",
-      "Title and event date are required.",
-      "error"
-    );
-
-    return;
+    setStatus("newsStatus", "");
   }
 
 
-  let imageUrl = null;
+  // =========================================================
+  // EVENTS
+  // =========================================================
+
+  let events = [];
 
 
-  if (imageFile) {
+  async function loadEvents() {
 
-    const fileName =
-      Date.now() + "-" + imageFile.name;
-
-    const { error: uploadError } =
-      await client.storage
-        .from("gallery")
-        .upload(
-          fileName,
-          imageFile
-        );
+    const {
+      data,
+      error
+    } = await client
+      .from("events")
+      .select("*")
+      .order("event_date", { ascending: true });
 
 
-    if (uploadError) {
+    if (error) {
+      console.error(error);
 
-      showStatus(
-        "eventStatus",
-        "Image upload failed: " +
-        uploadError.message,
-        "error"
-      );
+      document.getElementById("eventsList").innerHTML =
+        '<div class="empty">Unable to load events.</div>';
 
       return;
     }
 
 
-    const { data: publicUrlData } =
-      client.storage
-        .from("gallery")
-        .getPublicUrl(fileName);
+    events = data || [];
 
-
-    imageUrl =
-      publicUrlData.publicUrl;
-
+    renderEvents();
   }
 
 
-  const eventData = {
+  function renderEvents() {
 
-    title,
-
-    description,
-
-    location,
-
-    event_date:
-      new Date(eventDate).toISOString(),
-
-    ticket_url:
-      ticketUrl || null
-
-  };
+    const list =
+      document.getElementById("eventsList");
 
 
-  if (imageUrl) {
+    if (!events.length) {
+      list.innerHTML =
+        '<div class="empty">No events found.</div>';
 
-    eventData.image_url =
-      imageUrl;
+      return;
+    }
 
+
+    list.innerHTML = events.map(event => {
+
+      const image =
+        event.image_url
+          ? `<img class="thumb" src="${escapeHtml(event.image_url)}" alt="">`
+          : `<div class="thumb"></div>`;
+
+
+      return `
+        <div class="list-item">
+
+          ${image}
+
+          <div class="list-info">
+
+            <h4>${escapeHtml(event.title)}</h4>
+
+            <p>
+              ${escapeHtml(
+                formatDateTime(
+                  event.event_date,
+                  event.event_time
+                )
+              )}
+            </p>
+
+            <p>
+              ${escapeHtml(event.venue || "Venue not specified")}
+            </p>
+
+            <p>
+              ${escapeHtml(event.description || "")}
+            </p>
+
+          </div>
+
+          <div class="actions">
+
+            <button
+              class="btn btn-small btn-gold"
+              onclick="editEvent('${event.id}')"
+            >
+              Edit
+            </button>
+
+            <button
+              class="btn btn-small btn-danger"
+              onclick="deleteEvent('${event.id}')"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
   }
 
 
-  let result;
+  document
+    .getElementById("eventForm")
+    .addEventListener("submit", async function(event) {
+
+      event.preventDefault();
 
 
-  if (id) {
+      const id =
+        document.getElementById("eventId").value;
 
-    result =
-      await client
-        .from("events")
-        .update(eventData)
-        .eq("id", id);
+      const title =
+        document.getElementById("eventTitle").value.trim();
 
-  } else {
+      const eventDate =
+        document.getElementById("eventDate").value;
 
-    result =
-      await client
-        .from("events")
-        .insert([eventData]);
+      const eventTime =
+        document.getElementById("eventTime").value;
 
-  }
+      const venue =
+        document.getElementById("eventVenue").value.trim();
 
+      const description =
+        document.getElementById("eventDescription").value.trim();
 
-  if (result.error) {
-
-    showStatus(
-      "eventStatus",
-      "Error saving event: " +
-      result.error.message,
-      "error"
-    );
-
-    return;
-  }
+      const imageFile =
+        document.getElementById("eventImage").files[0];
 
 
-  showStatus(
-    "eventStatus",
-    "Event saved successfully!",
-    "success"
-  );
+      if (!title || !eventDate) {
+
+        setStatus(
+          "eventStatus",
+          "Event title and date are required.",
+          "error"
+        );
+
+        return;
+      }
 
 
-  resetEventForm();
-
-  await loadEvents();
-
-}
-
-
-function editEvent(id) {
-
-  const event =
-    events.find(item => item.id === id);
-
-  if (!event) return;
+      setStatus(
+        "eventStatus",
+        "Saving event..."
+      );
 
 
-  document.getElementById("eventId").value =
-    event.id;
+      try {
 
-  document.getElementById("eventTitle").value =
-    event.title || "";
-
-  document.getElementById("eventDescription").value =
-    event.description || "";
-
-  document.getElementById("eventLocation").value =
-    event.location || "";
-
-  document.getElementById("eventTicketUrl").value =
-    event.ticket_url || "";
+        let imageUrl = null;
 
 
-  if (event.event_date) {
+        if (imageFile) {
+
+          const safeName =
+            imageFile.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+
+          const filePath =
+            Date.now() + "-" + safeName;
+
+
+          const {
+            error: uploadError
+          } = await client.storage
+            .from("gallery")
+            .upload(filePath, imageFile);
+
+
+          if (uploadError) {
+            throw uploadError;
+          }
+
+
+          const {
+            data
+          } = client.storage
+            .from("gallery")
+            .getPublicUrl(filePath);
+
+
+          imageUrl = data.publicUrl;
+        }
+
+
+        const payload = {
+          title,
+          slug: id
+            ? makeSlug(title)
+            : makeSlug(title) + "-" + Date.now(),
+          event_date: eventDate,
+          event_time: eventTime || null,
+          venue,
+          description
+        };
+
+
+        if (imageUrl) {
+          payload.image_url = imageUrl;
+        }
+
+
+        if (id) {
+
+          const {
+            error
+          } = await client
+            .from("events")
+            .update(payload)
+            .eq("id", id);
+
+          if (error) throw error;
+
+        } else {
+
+          const {
+            error
+          } = await client
+            .from("events")
+            .insert(payload);
+
+          if (error) throw error;
+        }
+
+
+        clearEventForm();
+        await loadEvents();
+
+
+        setStatus(
+          "eventStatus",
+          "Event saved successfully.",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(error);
+
+        setStatus(
+          "eventStatus",
+          "Error: " + error.message,
+          "error"
+        );
+      }
+
+    });
+
+
+  function editEvent(id) {
+
+    const item =
+      events.find(event =>
+        String(event.id) === String(id)
+      );
+
+    if (!item) return;
+
+
+    document.getElementById("eventId").value =
+      item.id;
+
+    document.getElementById("eventTitle").value =
+      item.title || "";
 
     document.getElementById("eventDate").value =
-      new Date(event.event_date)
-        .toISOString()
-        .slice(0,16);
+      item.event_date || "";
 
+    document.getElementById("eventTime").value =
+      item.event_time || "";
+
+    document.getElementById("eventVenue").value =
+      item.venue || "";
+
+    document.getElementById("eventDescription").value =
+      item.description || "";
+
+
+    showSection(
+      "events",
+      document.querySelectorAll(".nav-btn")[5]
+    );
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   }
 
-}
+
+  async function deleteEvent(id) {
+
+    if (!confirm("Delete this event?")) return;
 
 
-async function deleteEvent(id) {
-
-  if (
-    !confirm(
-      "Delete this event?"
-    )
-  ) {
-    return;
-  }
-
-
-  const { error } =
-    await client
+    const {
+      error
+    } = await client
       .from("events")
       .delete()
       .eq("id", id);
 
 
-  if (error) {
-
-    showStatus(
-      "eventStatus",
-      "Error deleting event: " +
-      error.message,
-      "error"
-    );
-
-    return;
-  }
-
-
-  showStatus(
-    "eventStatus",
-    "Event deleted successfully.",
-    "success"
-  );
-
-
-  await loadEvents();
-
-}
-
-
-function resetEventForm() {
-
-  document
-    .getElementById("eventForm")
-    ?.reset();
-
-  document
-    .getElementById("eventId")
-    .value = "";
-
-}
-
-
-loadEvents();
-
-</script>
-
-<section id="settings" class="section">
-
-  <h2>Site Settings</h2>
-
-  <div class="card">
-
-    <h3>Website Information</h3>
-
-    <form id="settingsForm">
-
-      <label>Site Name</label>
-      <input
-        type="text"
-        id="settingSiteName"
-        placeholder="Leshky Records"
-      >
-
-      <label>Slogan</label>
-      <input
-        type="text"
-        id="settingSlogan"
-        placeholder="SOUND TO LEGACY"
-      >
-
-      <label>Contact Email</label>
-      <input
-        type="email"
-        id="settingEmail"
-        placeholder="contact@example.com"
-      >
-
-      <label>Phone Number</label>
-      <input
-        type="text"
-        id="settingPhone"
-        placeholder="+234..."
-      >
-
-      <label>Address</label>
-      <textarea
-        id="settingAddress"
-        rows="3"
-        placeholder="Makurdi, Benue State, Nigeria"
-      ></textarea>
-
-      <label>Instagram</label>
-      <input
-        type="url"
-        id="settingInstagram"
-        placeholder="https://instagram.com/..."
-      >
-
-      <label>Facebook</label>
-      <input
-        type="url"
-        id="settingFacebook"
-        placeholder="https://facebook.com/..."
-      >
-
-      <label>YouTube</label>
-      <input
-        type="url"
-        id="settingYoutube"
-        placeholder="https://youtube.com/..."
-      >
-
-      <button type="submit">
-        Save Settings
-      </button>
-
-    </form>
-
-    <p id="settingsStatus"></p>
-
-  </div>
-
-</section>
-
-<script>
-
-// ===============================
-// MEDIA MANAGER
-// ===============================
-
-let media = [];
-
-async function loadMedia() {
-
-  const { data, error } = await client
-    .from("media")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-
-    showStatus(
-      "mediaStatus",
-      "Error loading media: " + error.message,
-      "error"
-    );
-
-    return;
-  }
-
-  media = data || [];
-
-  renderMedia();
-}
-
-
-function renderMedia() {
-
-  const container =
-    document.getElementById("mediaList");
-
-  if (!container) return;
-
-  if (media.length === 0) {
-
-    container.innerHTML =
-      "<p>No media uploaded yet.</p>";
-
-    return;
-  }
-
-  container.innerHTML = "";
-
-  media.forEach(item => {
-
-    const card =
-      document.createElement("div");
-
-    card.style.cssText = `
-      border:1px solid #333;
-      padding:20px;
-      margin-bottom:15px;
-      border-radius:10px;
-      background:#111;
-    `;
-
-    let preview = "";
-
-    if (item.type === "image") {
-
-      preview = `
-        <img
-          src="${item.file_url}"
-          alt="${item.title}"
-          style="
-            width:100%;
-            max-width:350px;
-            height:220px;
-            object-fit:cover;
-            border-radius:10px;
-            margin-bottom:15px;
-          "
-        >
-      `;
-
-    } else if (item.type === "video") {
-
-      preview = `
-        <video
-          controls
-          style="
-            width:100%;
-            max-width:500px;
-            border-radius:10px;
-            margin-bottom:15px;
-          "
-        >
-          <source
-            src="${item.file_url}"
-            type="video/mp4"
-          >
-          Your browser does not support video playback.
-        </video>
-      `;
-
+    if (error) {
+      alert("Error: " + error.message);
+      return;
     }
 
-    card.innerHTML = `
 
-      ${preview}
-
-      <h3>${item.title}</h3>
-
-      <p>
-        Type: ${item.type}
-      </p>
-
-      <p>
-        ${item.description || ""}
-      </p>
-
-      <button
-        onclick="editMedia('${item.id}')">
-        Edit
-      </button>
-
-      <button
-        onclick="deleteMedia('${item.id}')">
-        Delete
-      </button>
-
-    `;
-
-    container.appendChild(card);
-
-  });
-}
-
-
-document
-  .getElementById("mediaForm")
-  ?.addEventListener(
-    "submit",
-    saveMedia
-  );
-
-
-async function saveMedia(event) {
-
-  event.preventDefault();
-
-  const id =
-    document.getElementById("mediaId").value;
-
-  const title =
-    document
-      .getElementById("mediaTitle")
-      .value
-      .trim();
-
-  const type =
-    document
-      .getElementById("mediaType")
-      .value;
-
-  const description =
-    document
-      .getElementById("mediaDescription")
-      .value
-      .trim();
-
-  const file =
-    document
-      .getElementById("mediaFile")
-      .files[0];
-
-
-  if (!title) {
-
-    showStatus(
-      "mediaStatus",
-      "Media title is required.",
-      "error"
-    );
-
-    return;
+    await loadEvents();
   }
 
 
-  if (!id && !file) {
+  function clearEventForm() {
 
-    showStatus(
-      "mediaStatus",
-      "Please select a file.",
-      "error"
-    );
+    document.getElementById("eventId").value = "";
+    document.getElementById("eventTitle").value = "";
+    document.getElementById("eventDate").value = "";
+    document.getElementById("eventTime").value = "";
+    document.getElementById("eventVenue").value = "";
+    document.getElementById("eventDescription").value = "";
+    document.getElementById("eventImage").value = "";
 
-    return;
+    setStatus("eventStatus", "");
   }
 
 
-  let fileUrl = null;
+  // =========================================================
+  // MEDIA
+  // =========================================================
+
+  let mediaItems = [];
 
 
-  if (file) {
+  async function loadMedia() {
 
-    const bucket =
-      type === "video"
-        ? "videos"
-        : "gallery";
-
-
-    const fileName =
-      Date.now() + "-" + file.name;
-
-
-    const { error: uploadError } =
-      await client.storage
-        .from(bucket)
-        .upload(
-          fileName,
-          file
-        );
+    const {
+      data,
+      error
+    } = await client
+      .from("media")
+      .select("*")
+      .order("created_at", { ascending: false });
 
 
-    if (uploadError) {
+    if (error) {
+      console.error(error);
 
-      showStatus(
-        "mediaStatus",
-        "File upload failed: " +
-        uploadError.message,
-        "error"
-      );
+      document.getElementById("mediaList").innerHTML =
+        '<div class="empty">Unable to load media.</div>';
 
       return;
     }
 
 
-    const { data: publicUrlData } =
-      client.storage
-        .from(bucket)
-        .getPublicUrl(fileName);
+    mediaItems = data || [];
 
-
-    fileUrl =
-      publicUrlData.publicUrl;
-
+    renderMedia();
   }
 
 
-  const mediaData = {
+  function renderMedia() {
 
-    title,
-
-    type,
-
-    description
-
-  };
+    const list =
+      document.getElementById("mediaList");
 
 
-  if (fileUrl) {
+    if (!mediaItems.length) {
+      list.innerHTML =
+        '<div class="empty">No media found.</div>';
 
-    mediaData.file_url =
-      fileUrl;
+      return;
+    }
 
+
+    list.innerHTML = mediaItems.map(item => {
+
+      let preview = `<div class="thumb"></div>`;
+
+
+      if (
+        item.type === "image" &&
+        item.file_url
+      ) {
+
+        preview = `
+          <img
+            class="thumb"
+            src="${escapeHtml(item.file_url)}"
+            alt=""
+          >
+        `;
+
+      } else if (
+        item.type === "video" &&
+        item.file_url
+      ) {
+
+        preview = `
+          <video
+            class="thumb"
+            src="${escapeHtml(item.file_url)}"
+            controls
+          ></video>
+        `;
+      }
+
+
+      return `
+        <div class="list-item">
+
+          ${preview}
+
+          <div class="list-info">
+
+            <h4>${escapeHtml(item.title)}</h4>
+
+            <p>
+              Type:
+              ${escapeHtml(item.type || "")}
+            </p>
+
+          </div>
+
+          <div class="actions">
+
+            <button
+              class="btn btn-small btn-gold"
+              onclick="editMedia('${item.id}')"
+            >
+              Edit
+            </button>
+
+            <button
+              class="btn btn-small btn-danger"
+              onclick="deleteMedia('${item.id}')"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
   }
 
 
-  let result;
+  document
+    .getElementById("mediaForm")
+    .addEventListener("submit", async function(event) {
+
+      event.preventDefault();
 
 
-  if (id) {
+      const id =
+        document.getElementById("mediaId").value;
 
-    result =
-      await client
-        .from("media")
-        .update(mediaData)
-        .eq("id", id);
+      const title =
+        document.getElementById("mediaTitle").value.trim();
 
-  } else {
+      const type =
+        document.getElementById("mediaType").value;
 
-    result =
-      await client
-        .from("media")
-        .insert([mediaData]);
-
-  }
+      const file =
+        document.getElementById("mediaFile").files[0];
 
 
-  if (result.error) {
+      if (!title) {
 
-    showStatus(
-      "mediaStatus",
-      "Error saving media: " +
-      result.error.message,
-      "error"
+        setStatus(
+          "mediaStatus",
+          "Media title is required.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (!id && !file) {
+
+        setStatus(
+          "mediaStatus",
+          "Please select a media file.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      setStatus(
+        "mediaStatus",
+        "Saving media..."
+      );
+
+
+      try {
+
+        let fileUrl = null;
+
+
+        if (file) {
+
+          const bucket =
+            type === "video"
+              ? "videos"
+              : "gallery";
+
+
+          const safeName =
+            file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+
+          const filePath =
+            Date.now() + "-" + safeName;
+
+
+          const {
+            error: uploadError
+          } = await client.storage
+            .from(bucket)
+            .upload(filePath, file);
+
+
+          if (uploadError) {
+            throw uploadError;
+          }
+
+
+          const {
+            data
+          } = client.storage
+            .from(bucket)
+            .getPublicUrl(filePath);
+
+
+          fileUrl = data.publicUrl;
+        }
+
+
+        const payload = {
+          title,
+          type
+        };
+
+
+        if (fileUrl) {
+          payload.file_url = fileUrl;
+        }
+
+
+        if (id) {
+
+          const {
+            error
+          } = await client
+            .from("media")
+            .update(payload)
+            .eq("id", id);
+
+          if (error) throw error;
+
+        } else {
+
+          const {
+            error
+          } = await client
+            .from("media")
+            .insert(payload);
+
+          if (error) throw error;
+        }
+
+
+        clearMediaForm();
+        await loadMedia();
+
+
+        setStatus(
+          "mediaStatus",
+          "Media saved successfully.",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(error);
+
+        setStatus(
+          "mediaStatus",
+          "Error: " + error.message,
+          "error"
+        );
+      }
+
+    });
+
+
+  function editMedia(id) {
+
+    const item =
+      mediaItems.find(media =>
+        String(media.id) === String(id)
+      );
+
+    if (!item) return;
+
+
+    document.getElementById("mediaId").value =
+      item.id;
+
+    document.getElementById("mediaTitle").value =
+      item.title || "";
+
+    document.getElementById("mediaType").value =
+      item.type || "image";
+
+
+    showSection(
+      "media",
+      document.querySelectorAll(".nav-btn")[6]
     );
 
-    return;
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   }
 
 
-  showStatus(
-    "mediaStatus",
-    "Media saved successfully!",
-    "success"
-  );
+  async function deleteMedia(id) {
+
+    if (!confirm("Delete this media item?")) return;
 
 
-  resetMediaForm();
-
-  await loadMedia();
-
-}
-
-
-function editMedia(id) {
-
-  const item =
-    media.find(item => item.id === id);
-
-  if (!item) return;
-
-
-  document.getElementById("mediaId").value =
-    item.id;
-
-  document.getElementById("mediaTitle").value =
-    item.title || "";
-
-  document.getElementById("mediaType").value =
-    item.type || "image";
-
-  document.getElementById("mediaDescription").value =
-    item.description || "";
-
-}
-
-
-async function deleteMedia(id) {
-
-  if (
-    !confirm(
-      "Delete this media item?"
-    )
-  ) {
-    return;
-  }
-
-
-  const { error } =
-    await client
+    const {
+      error
+    } = await client
       .from("media")
       .delete()
       .eq("id", id);
 
 
-  if (error) {
-
-    showStatus(
-      "mediaStatus",
-      "Error deleting media: " +
-      error.message,
-      "error"
-    );
-
-    return;
-  }
-
-
-  showStatus(
-    "mediaStatus",
-    "Media deleted successfully.",
-    "success"
-  );
-
-
-  await loadMedia();
-
-}
-
-
-function resetMediaForm() {
-
-  document
-    .getElementById("mediaForm")
-    ?.reset();
-
-  document
-    .getElementById("mediaId")
-    .value = "";
-
-}
-
-
-loadMedia();
-
-</script>
-
-<script>
-
-// ===============================
-// SETTINGS MANAGER
-// ===============================
-
-let siteSettings = {};
-
-
-async function loadSettings() {
-
-  const { data, error } = await client
-    .from("site_settings")
-    .select("*");
-
-  if (error) {
-
-    showStatus(
-      "settingsStatus",
-      "Error loading settings: " + error.message,
-      "error"
-    );
-
-    return;
-  }
-
-
-  siteSettings = {};
-
-  (data || []).forEach(setting => {
-
-    siteSettings[setting.setting_key] =
-      setting.setting_value;
-
-  });
-
-
-  document.getElementById("settingSiteName").value =
-    siteSettings.site_name || "";
-
-  document.getElementById("settingSlogan").value =
-    siteSettings.slogan || "";
-
-  document.getElementById("settingEmail").value =
-    siteSettings.contact_email || "";
-
-  document.getElementById("settingPhone").value =
-    siteSettings.phone || "";
-
-  document.getElementById("settingAddress").value =
-    siteSettings.address || "";
-
-  document.getElementById("settingInstagram").value =
-    siteSettings.instagram || "";
-
-  document.getElementById("settingFacebook").value =
-    siteSettings.facebook || "";
-
-  document.getElementById("settingYoutube").value =
-    siteSettings.youtube || "";
-
-}
-
-
-document
-  .getElementById("settingsForm")
-  ?.addEventListener(
-    "submit",
-    saveSettings
-  );
-
-
-async function saveSettings(event) {
-
-  event.preventDefault();
-
-
-  const settings = {
-
-    site_name:
-      document
-        .getElementById("settingSiteName")
-        .value
-        .trim(),
-
-    slogan:
-      document
-        .getElementById("settingSlogan")
-        .value
-        .trim(),
-
-    contact_email:
-      document
-        .getElementById("settingEmail")
-        .value
-        .trim(),
-
-    phone:
-      document
-        .getElementById("settingPhone")
-        .value
-        .trim(),
-
-    address:
-      document
-        .getElementById("settingAddress")
-        .value
-        .trim(),
-
-    instagram:
-      document
-        .getElementById("settingInstagram")
-        .value
-        .trim(),
-
-    facebook:
-      document
-        .getElementById("settingFacebook")
-        .value
-        .trim(),
-
-    youtube:
-      document
-        .getElementById("settingYoutube")
-        .value
-        .trim()
-
-  };
-
-
-  for (const [key, value] of Object.entries(settings)) {
-
-    const { data: existing } =
-      await client
-        .from("site_settings")
-        .select("id")
-        .eq("setting_key", key)
-        .maybeSingle();
-
-
-    let result;
-
-
-    if (existing) {
-
-      result =
-        await client
-          .from("site_settings")
-          .update({
-            setting_value: value,
-            updated_at: new Date().toISOString()
-          })
-          .eq("id", existing.id);
-
-    } else {
-
-      result =
-        await client
-          .from("site_settings")
-          .insert([{
-            setting_key: key,
-            setting_value: value
-          }]);
-
+    if (error) {
+      alert("Error: " + error.message);
+      return;
     }
 
 
-    if (result.error) {
+    await loadMedia();
+  }
 
-      showStatus(
+
+  function clearMediaForm() {
+
+    document.getElementById("mediaId").value = "";
+    document.getElementById("mediaTitle").value = "";
+    document.getElementById("mediaType").value = "image";
+    document.getElementById("mediaFile").value = "";
+
+    setStatus("mediaStatus", "");
+  }
+
+
+  // =========================================================
+  // SETTINGS
+  // =========================================================
+
+  const settingFields = {
+    site_name: "settingSiteName",
+    slogan: "settingSlogan",
+    contact_email: "settingEmail",
+    phone: "settingPhone",
+    address: "settingAddress",
+    instagram: "settingInstagram",
+    facebook: "settingFacebook",
+    youtube: "settingYoutube"
+  };
+
+
+  async function loadSettings() {
+
+    const {
+      data,
+      error
+    } = await client
+      .from("site_settings")
+      .select("*");
+
+
+    if (error) {
+
+      console.error(error);
+
+      setStatus(
         "settingsStatus",
-        "Error saving settings: " +
-        result.error.message,
+        "Unable to load settings: " + error.message,
         "error"
       );
 
       return;
     }
 
+
+    (data || []).forEach(setting => {
+
+      const fieldId =
+        settingFields[setting.setting_key];
+
+      if (!fieldId) return;
+
+
+      const field =
+        document.getElementById(fieldId);
+
+      if (field) {
+        field.value =
+          setting.setting_value || "";
+      }
+    });
   }
 
 
-  showStatus(
-    "settingsStatus",
-    "Settings saved successfully!",
-    "success"
-  );
+  document
+    .getElementById("settingsForm")
+    .addEventListener("submit", async function(event) {
+
+      event.preventDefault();
 
 
-  await loadSettings();
+      setStatus(
+        "settingsStatus",
+        "Saving settings..."
+      );
 
-}
+
+      try {
+
+        for (const key of Object.keys(settingFields)) {
+
+          const field =
+            document.getElementById(settingFields[key]);
+
+          const value =
+            field ? field.value.trim() : "";
 
 
-loadSettings();
+          const {
+            data: existing,
+            error: findError
+          } = await client
+            .from("site_settings")
+            .select("id")
+            .eq("setting_key", key)
+            .maybeSingle();
+
+
+          if (findError) {
+            throw findError;
+          }
+
+
+          if (existing) {
+
+            const {
+              error
+            } = await client
+              .from("site_settings")
+              .update({
+                setting_value: value
+              })
+              .eq("id", existing.id);
+
+            if (error) throw error;
+
+          } else {
+
+            const {
+              error
+            } = await client
+              .from("site_settings")
+              .insert({
+                setting_key: key,
+                setting_value: value
+              });
+
+            if (error) throw error;
+          }
+        }
+
+
+        setStatus(
+          "settingsStatus",
+          "Settings saved successfully.",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(error);
+
+        setStatus(
+          "settingsStatus",
+          "Error: " + error.message,
+          "error"
+        );
+      }
+
+    });
+
+
+  // =========================================================
+  // START DASHBOARD
+  // =========================================================
+
+  checkAuth();
 
 </script>
+
+</body>
+</html>  
