@@ -49,3 +49,110 @@ footer{padding:35px 7%;border-top:1px solid #222;color:#777}
 <footer>© 2026 Leshky Records • Sound to Legacy</footer>
 </body>
 </html>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://dcjeqalpzuewlholdbqc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_LZkkwMKMxbEMi3hKY-op4g_gHSQO529";
+
+const { createClient } = supabase;
+const client = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function loadEvents() {
+
+  const { data: events, error } = await client
+    .from("events")
+    .select("*")
+    .order("event_date", { ascending: true });
+
+  if (error) {
+    console.error("Error loading events:", error);
+    return;
+  }
+
+  const container =
+    document.getElementById("supabaseEvents");
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  events.forEach(event => {
+
+    const card =
+      document.createElement("article");
+
+    card.style.cssText = `
+      background:#111;
+      border:1px solid #333;
+      padding:20px;
+      border-radius:12px;
+    `;
+
+    card.innerHTML = `
+
+      ${
+        event.image_url
+          ? `
+            <img
+              src="${event.image_url}"
+              alt="${event.title}"
+              style="
+                width:100%;
+                aspect-ratio:16/9;
+                object-fit:cover;
+                border-radius:10px;
+                margin-bottom:15px;
+              "
+            >
+          `
+          : ""
+      }
+
+      <h3>${event.title}</h3>
+
+      <p>
+        ${event.description || ""}
+      </p>
+
+      <p>
+        📍 ${event.location || "Location TBA"}
+      </p>
+
+      <p>
+        📅 ${
+          event.event_date
+            ? new Date(event.event_date)
+                .toLocaleString()
+            : ""
+        }
+      </p>
+
+      ${
+        event.ticket_url
+          ? `
+            <a
+              href="${event.ticket_url}"
+              target="_blank"
+              style="
+                color:#d4af37;
+                display:inline-block;
+                margin-top:10px;
+              "
+            >
+              Tickets / More Info
+            </a>
+          `
+          : ""
+      }
+
+    `;
+
+    container.appendChild(card);
+
+  });
+}
+
+loadEvents();
+</script>
