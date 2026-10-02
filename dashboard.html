@@ -2393,3 +2393,392 @@ loadNews();
 
 </body>
 </html>
+
+<script>
+
+let events = [];
+
+async function loadEvents() {
+
+  const { data, error } = await client
+    .from("events")
+    .select("*")
+    .order("event_date", { ascending: true });
+
+  if (error) {
+
+    showStatus(
+      "eventStatus",
+      "Error loading events: " + error.message,
+      "error"
+    );
+
+    return;
+  }
+
+  events = data || [];
+
+  renderEvents();
+}
+
+
+function renderEvents() {
+
+  const container =
+    document.getElementById("eventList");
+
+  if (!container) return;
+
+  if (events.length === 0) {
+
+    container.innerHTML =
+      "<p>No events yet.</p>";
+
+    return;
+  }
+
+  container.innerHTML = "";
+
+  events.forEach(event => {
+
+    const card =
+      document.createElement("div");
+
+    card.style.cssText = `
+      border:1px solid #333;
+      padding:20px;
+      margin-bottom:15px;
+      border-radius:10px;
+      background:#111;
+    `;
+
+    card.innerHTML = `
+
+      ${
+        event.image_url
+          ? `
+            <img
+              src="${event.image_url}"
+              alt="${event.title}"
+              style="
+                width:100%;
+                max-width:300px;
+                height:180px;
+                object-fit:cover;
+                border-radius:10px;
+                margin-bottom:15px;
+              "
+            >
+          `
+          : ""
+      }
+
+      <h3>${event.title}</h3>
+
+      <p>
+        ${event.description || ""}
+      </p>
+
+      <p>
+        📍 ${event.location || "Location TBA"}
+      </p>
+
+      <p>
+        📅 ${
+          event.event_date
+            ? new Date(event.event_date)
+                .toLocaleString()
+            : ""
+        }
+      </p>
+
+      <button
+        onclick="editEvent('${event.id}')">
+        Edit
+      </button>
+
+      <button
+        onclick="deleteEvent('${event.id}')">
+        Delete
+      </button>
+
+    `;
+
+    container.appendChild(card);
+
+  });
+}
+
+
+document
+  .getElementById("eventForm")
+  ?.addEventListener(
+    "submit",
+    saveEvent
+  );
+
+
+async function saveEvent(event) {
+
+  event.preventDefault();
+
+  const id =
+    document.getElementById("eventId").value;
+
+  const title =
+    document
+      .getElementById("eventTitle")
+      .value
+      .trim();
+
+  const description =
+    document
+      .getElementById("eventDescription")
+      .value
+      .trim();
+
+  const location =
+    document
+      .getElementById("eventLocation")
+      .value
+      .trim();
+
+  const eventDate =
+    document
+      .getElementById("eventDate")
+      .value;
+
+  const ticketUrl =
+    document
+      .getElementById("eventTicketUrl")
+      .value
+      .trim();
+
+  const imageFile =
+    document
+      .getElementById("eventImage")
+      .files[0];
+
+
+  if (!title || !eventDate) {
+
+    showStatus(
+      "eventStatus",
+      "Title and event date are required.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  let imageUrl = null;
+
+
+  if (imageFile) {
+
+    const fileName =
+      Date.now() + "-" + imageFile.name;
+
+    const { error: uploadError } =
+      await client.storage
+        .from("gallery")
+        .upload(
+          fileName,
+          imageFile
+        );
+
+
+    if (uploadError) {
+
+      showStatus(
+        "eventStatus",
+        "Image upload failed: " +
+        uploadError.message,
+        "error"
+      );
+
+      return;
+    }
+
+
+    const { data: publicUrlData } =
+      client.storage
+        .from("gallery")
+        .getPublicUrl(fileName);
+
+
+    imageUrl =
+      publicUrlData.publicUrl;
+
+  }
+
+
+  const eventData = {
+
+    title,
+
+    description,
+
+    location,
+
+    event_date:
+      new Date(eventDate).toISOString(),
+
+    ticket_url:
+      ticketUrl || null
+
+  };
+
+
+  if (imageUrl) {
+
+    eventData.image_url =
+      imageUrl;
+
+  }
+
+
+  let result;
+
+
+  if (id) {
+
+    result =
+      await client
+        .from("events")
+        .update(eventData)
+        .eq("id", id);
+
+  } else {
+
+    result =
+      await client
+        .from("events")
+        .insert([eventData]);
+
+  }
+
+
+  if (result.error) {
+
+    showStatus(
+      "eventStatus",
+      "Error saving event: " +
+      result.error.message,
+      "error"
+    );
+
+    return;
+  }
+
+
+  showStatus(
+    "eventStatus",
+    "Event saved successfully!",
+    "success"
+  );
+
+
+  resetEventForm();
+
+  await loadEvents();
+
+}
+
+
+function editEvent(id) {
+
+  const event =
+    events.find(item => item.id === id);
+
+  if (!event) return;
+
+
+  document.getElementById("eventId").value =
+    event.id;
+
+  document.getElementById("eventTitle").value =
+    event.title || "";
+
+  document.getElementById("eventDescription").value =
+    event.description || "";
+
+  document.getElementById("eventLocation").value =
+    event.location || "";
+
+  document.getElementById("eventTicketUrl").value =
+    event.ticket_url || "";
+
+
+  if (event.event_date) {
+
+    document.getElementById("eventDate").value =
+      new Date(event.event_date)
+        .toISOString()
+        .slice(0,16);
+
+  }
+
+}
+
+
+async function deleteEvent(id) {
+
+  if (
+    !confirm(
+      "Delete this event?"
+    )
+  ) {
+    return;
+  }
+
+
+  const { error } =
+    await client
+      .from("events")
+      .delete()
+      .eq("id", id);
+
+
+  if (error) {
+
+    showStatus(
+      "eventStatus",
+      "Error deleting event: " +
+      error.message,
+      "error"
+    );
+
+    return;
+  }
+
+
+  showStatus(
+    "eventStatus",
+    "Event deleted successfully.",
+    "success"
+  );
+
+
+  await loadEvents();
+
+}
+
+
+function resetEventForm() {
+
+  document
+    .getElementById("eventForm")
+    ?.reset();
+
+  document
+    .getElementById("eventId")
+    .value = "";
+
+}
+
+
+loadEvents();
+
+</script>
