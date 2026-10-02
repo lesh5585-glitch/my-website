@@ -50,6 +50,25 @@ footer{padding:35px 7%;border-top:1px solid #222;color:#777}
 </body>
 </html>
 
+<section style="padding:60px 20px;">
+
+  <h2 style="text-align:center;">
+    Upcoming <span style="color:#d4af37;">Events</span>
+  </h2>
+
+  <div
+    id="supabaseEvents"
+    style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:25px;
+      max-width:1100px;
+      margin:30px auto;
+    ">
+  </div>
+
+</section>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
