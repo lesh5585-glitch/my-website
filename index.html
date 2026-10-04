@@ -1,12 +1,13 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <h1 id="siteName">Leshky Records</h1>
-    <meta name="description" content="Leshky Records — Sound to Legacy. Discover new artists, music, albums and releases from Makurdi, Nigeria.">
+    <title>Leshky Records — Sound to Legacy</title>
+
+    <meta name="description" content="Leshky Records — Independent record label based in Makurdi, Benue State, Nigeria. Sound to Legacy.">
+    <meta name="theme-color" content="#000000">
 
     <style>
         * {
@@ -15,188 +16,99 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --black: #080808;
-            --dark: #111111;
-            --dark2: #181818;
-            --gold: #d4af37;
-            --gold-light: #f1d477;
-            --red: #8f1018;
-            --white: #ffffff;
-            --gray: #aaaaaa;
-        }
-
         html {
             scroll-behavior: smooth;
         }
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background: var(--black);
-            color: var(--white);
+            background: #050505;
+            color: #fff;
             line-height: 1.6;
         }
 
         a {
-            text-decoration: none;
             color: inherit;
+            text-decoration: none;
         }
 
-        button {
-            font-family: inherit;
-        }
-
-        /* NAVIGATION */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 18px 6%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(8, 8, 8, 0.92);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
-        }
-
-        .logo {
-            font-size: 23px;
-            font-weight: 900;
-            letter-spacing: 2px;
-        }
-
-        .logo span {
-            color: var(--gold);
-        }
-
-        .logo small {
+        img {
+            max-width: 100%;
             display: block;
-            color: var(--gray);
-            font-size: 8px;
-            letter-spacing: 4px;
-            margin-top: -3px;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+        :root {
+            --black: #050505;
+            --dark: #0b0b0b;
+            --gold: #d4af37;
+            --gold-light: #f1d36b;
+            --red: #8b0000;
+            --red-light: #b30000;
+            --white: #ffffff;
+            --muted: #aaaaaa;
+            --border: rgba(212, 175, 55, 0.2);
+        }
+
+        .container {
+            width: min(1180px, 92%);
+            margin: 0 auto;
+        }
+
+        .section {
+            padding: 90px 0;
+        }
+
+        .section-title {
             text-align: center;
+            margin-bottom: 50px;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            font-size: 14px;
-            color: #ddd;
-            transition: 0.3s;
-        }
-
-        .nav-links a:hover {
+        .section-title .eyebrow {
             color: var(--gold);
-        }
-
-        .nav-button {
-            border: 1px solid var(--gold);
-            padding: 9px 17px;
-            border-radius: 4px;
-            color: var(--gold) !important;
-        }
-
-        .menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 28px;
-            cursor: pointer;
-        }
-
-        /* HERO */
-        .hero {
-            min-height: 100vh;
-            padding: 160px 7% 90px;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            background:
-                radial-gradient(circle at 75% 40%, rgba(143, 16, 24, 0.35), transparent 30%),
-                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.10), transparent 30%),
-                var(--black);
-        }
-
-        .hero::before {
-            content: "";
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            border: 1px solid rgba(212, 175, 55, 0.12);
-            border-radius: 50%;
-            right: -100px;
-            top: 20%;
-        }
-
-        .hero-content {
-            max-width: 760px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .eyebrow {
-            color: var(--gold);
-            letter-spacing: 5px;
             text-transform: uppercase;
+            letter-spacing: 3px;
             font-size: 12px;
-            margin-bottom: 18px;
+            margin-bottom: 10px;
         }
 
-        .hero h1 {
-            font-size: clamp(52px, 9vw, 110px);
-            line-height: 0.92;
+        .section-title h2 {
+            font-size: clamp(32px, 5vw, 52px);
+            line-height: 1.1;
             text-transform: uppercase;
-            letter-spacing: -4px;
-            margin-bottom: 25px;
         }
 
-        .hero h1 span {
-            color: var(--gold);
-        }
-
-        .hero-slogan {
-            font-size: clamp(20px, 3vw, 30px);
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .hero p {
-            max-width: 580px;
-            color: #bdbdbd;
-            font-size: 16px;
-            margin-bottom: 35px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
+        .section-title p {
+            max-width: 650px;
+            margin: 15px auto 0;
+            color: var(--muted);
         }
 
         .btn {
-            display: inline-block;
-            padding: 13px 25px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 25px;
+            border-radius: 3px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 13px;
+            transition: .3s ease;
             cursor: pointer;
-            transition: 0.3s;
-            border: none;
+            border: 1px solid transparent;
         }
 
         .btn-primary {
             background: var(--gold);
-            color: #080808;
+            color: #000;
         }
 
         .btn-primary:hover {
@@ -205,509 +117,358 @@
         }
 
         .btn-outline {
-            border: 1px solid #555;
-            color: white;
-            background: transparent;
-        }
-
-        .btn-outline:hover {
             border-color: var(--gold);
             color: var(--gold);
         }
 
-        /* SECTION */
-        section {
-            padding: 90px 7%;
-        }
-
-        .section-heading {
-            display: flex;
-            align-items: end;
-            justify-content: space-between;
-            margin-bottom: 40px;
-            gap: 20px;
-        }
-
-        .section-heading h2 {
-            font-size: clamp(30px, 5vw, 48px);
-            line-height: 1;
-        }
-
-        .section-heading h2 span {
-            color: var(--gold);
-        }
-
-        .section-heading p {
-            color: var(--gray);
-            max-width: 430px;
-            font-size: 14px;
-        }
-
-        /* MUSIC */
-        .music-section {
-            background: #0d0d0d;
-        }
-
-        .music-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 22px;
-        }
-
-        .music-card {
-            background: var(--dark2);
-            border: 1px solid #252525;
-            border-radius: 8px;
-            overflow: hidden;
-            transition: 0.3s;
-        }
-
-        .music-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(212, 175, 55, 0.5);
-        }
-
-        .cover {
-            height: 240px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background:
-                linear-gradient(135deg, rgba(212,175,55,.25), rgba(143,16,24,.55)),
-                #171717;
-            position: relative;
-        }
-
-        .cover::after {
-            content: "LESHKY";
-            font-size: 34px;
-            font-weight: 900;
-            letter-spacing: 5px;
-            opacity: 0.8;
-        }
-
-        .play-cover {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            border: none;
+        .btn-outline:hover {
             background: var(--gold);
-            cursor: pointer;
-            font-size: 17px;
+            color: #000;
         }
 
-        .music-info {
-            padding: 20px;
-        }
+        /* HEADER */
 
-        .music-info h3 {
-            font-size: 18px;
-            margin-bottom: 4px;
-        }
-
-        .artist-name {
-            color: var(--gold);
-            font-size: 13px;
-        }
-
-        .music-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-            color: #777;
-            font-size: 12px;
-        }
-
-        .download-link {
-            color: var(--gold);
-            cursor: pointer;
-        }
-
-        /* ARTISTS */
-        .artist-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-
-        .artist-card {
-            text-align: center;
-        }
-
-        .artist-photo {
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            aspect-ratio: 1;
-            border-radius: 50%;
-            background:
-                radial-gradient(circle, rgba(212,175,55,.3), transparent 35%),
-                linear-gradient(135deg, #262626, #121212);
-            border: 2px solid #292929;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.12);
+        }
+
+        .nav {
+            min-height: 78px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-            font-size: 38px;
+            justify-content: space-between;
+            gap: 30px;
         }
 
-        .artist-card h3 {
+        .logo {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: var(--gold);
+            font-size: 22px;
+        }
+
+        .logo small {
+            margin-top: 6px;
+            font-size: 8px;
+            letter-spacing: 3px;
+            color: #fff;
+            opacity: .7;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ddd;
+            transition: .3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            color: #fff;
+            border: 0;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 70% 30%, rgba(139,0,0,.35), transparent 35%),
+                radial-gradient(circle at 20% 80%, rgba(212,175,55,.10), transparent 35%),
+                #050505;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(0,0,0,.95), rgba(0,0,0,.55), rgba(0,0,0,.85));
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 780px;
+            padding-top: 80px;
+        }
+
+        .hero .eyebrow {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 9vw, 100px);
+            line-height: .9;
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: -3px;
+        }
+
+        .hero h1 span {
+            color: var(--gold);
+        }
+
+        .hero-slogan {
+            margin-top: 25px;
+            color: #ddd;
+            font-size: clamp(20px, 3vw, 30px);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .hero p {
+            margin-top: 20px;
+            max-width: 620px;
+            color: #aaa;
             font-size: 17px;
         }
 
-        .artist-card p {
-            color: var(--gray);
-            font-size: 13px;
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 30px;
         }
 
         /* ABOUT */
-        .about {
-            background:
-                linear-gradient(rgba(8,8,8,.9), rgba(8,8,8,.96)),
-                var(--black);
-        }
 
         .about-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 70px;
+            gap: 60px;
             align-items: center;
         }
 
-        .about h2 {
-            font-size: clamp(36px, 5vw, 58px);
-            margin-bottom: 20px;
-        }
-
-        .about h2 span {
-            color: var(--gold);
-        }
-
-        .about p {
-            color: #aaa;
-            margin-bottom: 15px;
-        }
-
-        .about-box {
-            border: 1px solid #2b2b2b;
-            padding: 45px;
-            background: #101010;
+        .about-image {
+            min-height: 480px;
+            background:
+                linear-gradient(rgba(139,0,0,.25), rgba(0,0,0,.7)),
+                radial-gradient(circle, #222, #080808);
+            border: 1px solid var(--border);
             position: relative;
+            overflow: hidden;
         }
 
-        .about-box::before {
-            content: "S";
+        .about-image::after {
+            content: "SOUND TO LEGACY";
             position: absolute;
-            font-size: 170px;
-            font-weight: 900;
-            color: rgba(212,175,55,.05);
-            right: 15px;
-            bottom: -20px;
-        }
-
-        .about-box h3 {
+            bottom: 25px;
+            left: 25px;
             color: var(--gold);
-            margin-bottom: 15px;
+            font-size: 14px;
+            letter-spacing: 5px;
+            font-weight: bold;
         }
 
-        /* SERVICES */
-        .services {
-            background: #0d0d0d;
+        .about-content h2 {
+            font-size: clamp(34px, 5vw, 58px);
+            text-transform: uppercase;
+            line-height: 1;
         }
 
-        .service-grid {
+        .about-content h2 span {
+            color: var(--gold);
+        }
+
+        .about-content p {
+            color: #aaa;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .about-list {
+            margin-top: 25px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .about-list div {
+            border-left: 3px solid var(--gold);
+            padding-left: 14px;
+            color: #ddd;
+        }
+
+        /* CARDS */
+
+        .cards {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 25px;
         }
 
-        .service {
-            padding: 30px;
+        .card {
+            background: #0b0b0b;
+            border: 1px solid rgba(255,255,255,.08);
+            overflow: hidden;
+            transition: .3s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: var(--gold);
+        }
+
+        .card-image {
+            aspect-ratio: 1;
             background: #151515;
-            border: 1px solid #252525;
+            overflow: hidden;
         }
 
-        .service-number {
-            color: var(--gold);
-            font-size: 12px;
-            letter-spacing: 3px;
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .service h3 {
-            margin: 15px 0 8px;
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
             font-size: 21px;
+            margin-bottom: 5px;
         }
 
-        .service p {
+        .card-content p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #020202;
+            border-top: 1px solid rgba(212,175,55,.15);
+            padding: 60px 0 25px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-title {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+            font-size: 13px;
+        }
+
+        footer p,
+        footer a {
             color: #999;
             font-size: 14px;
         }
 
-        /* NEWS */
-        .news-grid {
+        footer a:hover {
+            color: var(--gold);
+        }
+
+        .footer-links {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 22px;
-        }
-
-        .news-card {
-            border: 1px solid #292929;
-            background: #111;
-        }
-
-        .news-image {
-            height: 180px;
-            background: linear-gradient(135deg, #291010, #17130b);
-        }
-
-        .news-content {
-            padding: 22px;
-        }
-
-        .news-date {
-            color: var(--gold);
-            font-size: 11px;
-            letter-spacing: 2px;
-        }
-
-        .news-content h3 {
-            margin: 10px 0;
-        }
-
-        .news-content p {
-            color: #999;
-            font-size: 13px;
-        }
-
-        /* CONTACT */
-        .contact {
-            background: linear-gradient(135deg, #120909, #0c0c0c);
-            text-align: center;
-        }
-
-        .contact h2 {
-            font-size: clamp(38px, 6vw, 65px);
-            margin-bottom: 15px;
-        }
-
-        .contact h2 span {
-            color: var(--gold);
-        }
-
-        .contact p {
-            color: #aaa;
-            max-width: 550px;
-            margin: 0 auto 30px;
-        }
-
-        .contact-info {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            color: #ccc;
-            margin-top: 30px;
-        }
-
-        .contact-info strong {
-            color: var(--gold);
-            display: block;
-            font-size: 12px;
-            letter-spacing: 2px;
-            margin-bottom: 4px;
-        }
-
-        /* FOOTER */
-        footer {
-            padding: 40px 7%;
-            border-top: 1px solid #222;
-            background: #050505;
-        }
-
-        .footer-top {
-            display: flex;
-            justify-content: space-between;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .footer-brand p {
-            color: #777;
-            font-size: 13px;
-            margin-top: 8px;
-        }
-
-        .socials {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .socials a {
-            width: 38px;
-            height: 38px;
-            border: 1px solid #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            font-size: 12px;
-            transition: .3s;
-        }
-
-        .socials a:hover {
-            border-color: var(--gold);
-            color: var(--gold);
+            gap: 9px;
         }
 
         .copyright {
-            color: #555;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,.08);
+            text-align: center;
+            color: #666;
             font-size: 12px;
-            margin-top: 35px;
-        }
-
-        /* PLAYER */
-        .player {
-            position: fixed;
-            left: 20px;
-            right: 20px;
-            bottom: 20px;
-            z-index: 999;
-            background: rgba(20,20,20,.96);
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 12px 18px;
-            display: none;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 10px 35px rgba(0,0,0,.5);
-        }
-
-        .player.active {
-            display: flex;
-        }
-
-        .player-button {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            border: none;
-            background: var(--gold);
-            cursor: pointer;
-        }
-
-        .player-info {
-            min-width: 130px;
-        }
-
-        .player-info strong {
-            display: block;
-            font-size: 13px;
-        }
-
-        .player-info span {
-            color: #888;
-            font-size: 11px;
-        }
-
-        .progress {
-            flex: 1;
-            height: 4px;
-            background: #333;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            width: 0%;
-            height: 100%;
-            background: var(--gold);
         }
 
         /* RESPONSIVE */
+
         @media (max-width: 900px) {
-            .music-grid,
-            .service-grid,
-            .news-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 78px;
+                left: 0;
+                width: 100%;
+                background: #050505;
+                padding: 25px;
+                flex-direction: column;
+                align-items: flex-start;
+                border-bottom: 1px solid rgba(212,175,55,.2);
             }
 
-            .artist-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
             }
 
             .about-grid {
                 grid-template-columns: 1fr;
             }
-        }
 
-        @media (max-width: 650px) {
-            nav {
-                padding: 16px 5%;
-            }
-
-            .menu-btn {
-                display: block;
-            }
-
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                background: #0a0a0a;
-                flex-direction: column;
-                padding: 25px;
-                border-bottom: 1px solid #222;
-            }
-
-            .nav-links.show {
-                display: flex;
-            }
-
-            .hero {
-                padding-left: 6%;
-                padding-right: 6%;
-            }
-
-            section {
-                padding: 65px 6%;
-            }
-
-            .section-heading {
-                display: block;
-            }
-
-            .section-heading p {
-                margin-top: 15px;
-            }
-
-            .music-grid,
-            .service-grid,
-            .news-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .artist-grid {
+            .cards {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .player {
-                left: 8px;
-                right: 8px;
-                bottom: 8px;
-                padding: 10px;
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .section {
+                padding: 70px 0;
             }
 
-            .progress {
-                display: none;
+            .cards {
+                grid-template-columns: 1fr;
             }
 
-            .player-info {
-                min-width: 0;
-                flex: 1;
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                letter-spacing: -2px;
             }
         }
     </style>
@@ -715,667 +476,719 @@
 
 <body>
 
-    <!-- NAVIGATION -->
-    <nav>
+<header>
+    <div class="container nav">
+
         <a href="#home" class="logo">
-            LESHKY <span>RECORDS</span>
-            <small>SOUND TO LEGACY</small>
+            <span data-site-name>LESHKY RECORDS</span>
+            <small data-site-slogan>SOUND TO LEGACY</small>
         </a>
 
-        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        <button class="menu-toggle" id="menuToggle">☰</button>
 
-        <div class="nav-links" id="navLinks">
+        <nav class="nav-links" id="navLinks">
             <a href="#home">Home</a>
-            <a href="#music">Music</a>
-            <a href="#artists">Artists</a>
             <a href="#about">About</a>
-            <a href="#services">Services</a>
-            <a href="#news">News</a>
-            <a href="#contact" class="nav-button">Contact</a>
-        </div>
-    </nav>
+            <a href="artists.html">Artists</a>
+            <a href="music.html">Music</a>
+            <a href="news.html">News</a>
+            <a href="events.html">Events</a>
+            <a href="media.html">Media</a>
+            <a href="contact.html">Contact</a>
+        </nav>
 
-    <!-- HERO -->
-    <header class="hero" id="home">
-        <div class="hero-content">
-            <div class="eyebrow">Independent Record Label • Makurdi, Nigeria</div>
+    </div>
+</header>
 
-            <h1>
-                LESHKY<br>
-                <span>RECORDS</span>
-            </h1>
+<main>
 
-            <div class="hero-slogan">Sound to Legacy.</div>
+<section class="hero" id="home">
 
-            <p>
-                Discover the sound of tomorrow. Leshky Records is a Nigerian
-                record label dedicated to developing artists, releasing great
-                music and building lasting legacies.
-            </p>
+    <div class="container hero-content">
 
-            <div class="hero-buttons">
-                <a href="#music" class="btn btn-primary">Explore Music</a>
-                <a href="#artists" class="btn btn-outline">Meet Our Artists</a>
-            </div>
-        </div>
-    </header>
-
-    <!-- MUSIC -->
-    <section class="music-section" id="music">
-        <div class="section-heading">
-            <div>
-                <div class="eyebrow">Latest Releases</div>
-                <h2>THE <span>SOUND</span></h2>
-            </div>
-
-            <p>
-                Stream the latest releases from Leshky Records.
-                Real songs can be added here through the admin system we'll build.
-            </p>
+        <div class="eyebrow">
+            Independent Record Label •
+            <span data-site-location>Makurdi, Benue State, Nigeria</span>
         </div>
 
-        <div class="music-grid">
+        <h1>
+            LESHKY
+            <span>RECORDS</span>
+        </h1>
 
-            <article class="music-card">
-                <div class="cover">
-                    <button class="play-cover" onclick="playSong('Demo Track 01', 'Leshky Records')">▶</button>
-                </div>
-
-                <div class="music-info">
-                    <h3>Demo Track 01</h3>
-                    <div class="artist-name">Leshky Records Artist</div>
-
-                    <div class="music-meta">
-                        <span>Single • 2026</span>
-                        <span class="download-link" onclick="downloadDemo()">
-                            Download
-                        </span>
-                    </div>
-                </div>
-            </article>
-
-            <article class="music-card">
-                <div class="cover">
-                    <button class="play-cover" onclick="playSong('Demo Track 02', 'Leshky Records')">▶</button>
-                </div>
-
-                <div class="music-info">
-                    <h3>Demo Track 02</h3>
-                    <div class="artist-name">Leshky Records Artist</div>
-
-                    <div class="music-meta">
-                        <span>Single • 2026</span>
-                        <span class="download-link" onclick="downloadDemo()">
-                            Download
-                        </span>
-                    </div>
-                </div>
-            </article>
-
-            <article class="music-card">
-                <div class="cover">
-                    <button class="play-cover" onclick="playSong('Demo Track 03', 'Leshky Records')">▶</button>
-                </div>
-
-                <div class="music-info">
-                    <h3>Demo Track 03</h3>
-                    <div class="artist-name">Leshky Records Artist</div>
-
-                    <div class="music-meta">
-                        <span>Single • 2026</span>
-                        <span class="download-link" onclick="downloadDemo()">
-                            Download
-                        </span>
-                    </div>
-                </div>
-            </article>
-
+        <div class="hero-slogan" data-site-slogan>
+            Sound to Legacy.
         </div>
-    </section>
-
-    <!-- ARTISTS -->
-    <section id="artists">
-        <div class="section-heading">
-            <div>
-                <div class="eyebrow">Our Talent</div>
-                <h2>MEET THE <span>ARTISTS</span></h2>
-            </div>
-
-            <p>
-                Artists signed to Leshky Records will have dedicated profiles
-                with their music, biography, releases and social links.
-            </p>
-        </div>
-
-        <div class="artist-grid">
-
-            <div class="artist-card">
-                <div class="artist-photo">♪</div>
-                <h3>Artist One</h3>
-                <p>Afrobeats</p>
-            </div>
-
-            <div class="artist-card">
-                <div class="artist-photo">♫</div>
-                <h3>Artist Two</h3>
-                <p>Afropop</p>
-            </div>
-
-            <div class="artist-card">
-                <div class="artist-photo">♬</div>
-                <h3>Artist Three</h3>
-                <p>Hip-Hop</p>
-            </div>
-
-            <div class="artist-card">
-                <div class="artist-photo">♪</div>
-                <h3>Artist Four</h3>
-                <p>R&B</p>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ABOUT -->
-    <section class="about" id="about">
-        <div class="about-grid">
-
-            <div>
-                <div class="eyebrow">About Leshky Records</div>
-
-                <h2>
-                    FROM <span>SOUND</span><br>
-                    TO LEGACY.
-                </h2>
-
-                <p>
-                    Leshky Records is a Nigerian record label based in Makurdi,
-                    focused on discovering, developing and promoting talented
-                    artists.
-                </p>
-
-                <p>
-                    Our mission is to create music that connects with people
-                    while giving artists the platform, development and
-                    opportunities they need to build sustainable careers.
-                </p>
-            </div>
-
-            <div class="about-box">
-                <h3>OUR VISION</h3>
-
-                <p>
-                    To build a respected African music brand that discovers
-                    exceptional talent and turns creative sound into a lasting
-                    legacy.
-                </p>
-
-                <br>
-
-                <h3>OUR HOME</h3>
-
-                <p>
-                    Makurdi, Benue State, Nigeria 🇳🇬
-                </p>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- SERVICES -->
-    <section class="services" id="services">
-        <div class="section-heading">
-            <div>
-                <div class="eyebrow">What We Do</div>
-                <h2>OUR <span>WORLD</span></h2>
-            </div>
-        </div>
-
-        <div class="service-grid">
-
-            <div class="service">
-                <div class="service-number">01</div>
-                <h3>Artist Development</h3>
-                <p>
-                    Supporting artists with creative direction, branding,
-                    career development and professional growth.
-                </p>
-            </div>
-
-            <div class="service">
-                <div class="service-number">02</div>
-                <h3>Music Production</h3>
-                <p>
-                    Developing quality recordings, singles, EPs and albums
-                    for our artists.
-                </p>
-            </div>
-
-            <div class="service">
-                <div class="service-number">03</div>
-                <h3>Music Distribution</h3>
-                <p>
-                    Preparing and distributing releases to digital platforms
-                    and our own music platform.
-                </p>
-            </div>
-
-            <div class="service">
-                <div class="service-number">04</div>
-                <h3>Marketing & Promotion</h3>
-                <p>
-                    Building campaigns that help artists and releases reach
-                    new audiences.
-                </p>
-            </div>
-
-            <div class="service">
-                <div class="service-number">05</div>
-                <h3>Artist Branding</h3>
-                <p>
-                    Creating strong visual identities and digital experiences
-                    around our artists.
-                </p>
-            </div>
-
-            <div class="service">
-                <div class="service-number">06</div>
-                <h3>Events & Bookings</h3>
-                <p>
-                    Connecting talent with performances, events and
-                    professional opportunities.
-                </p>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- NEWS -->
-    <section id="news">
-        <div class="section-heading">
-            <div>
-                <div class="eyebrow">Leshky Updates</div>
-                <h2>LATEST <span>NEWS</span></h2>
-            </div>
-        </div>
-
-        <div class="news-grid">
-
-            <article class="news-card">
-                <div class="news-image"></div>
-                <div class="news-content">
-                    <div class="news-date">COMING SOON</div>
-                    <h3>New Music Is Coming</h3>
-                    <p>
-                        Stay tuned for upcoming releases from the Leshky Records family.
-                    </p>
-                </div>
-            </article>
-
-            <article class="news-card">
-                <div class="news-image"></div>
-                <div class="news-content">
-                    <div class="news-date">LESHKY RECORDS</div>
-                    <h3>Meet Our Artists</h3>
-                    <p>
-                        Discover the creative talent helping us take sound to legacy.
-                    </p>
-                </div>
-            </article>
-
-            <article class="news-card">
-                <div class="news-image"></div>
-                <div class="news-content">
-                    <div class="news-date">MAKURDI • NIGERIA</div>
-                    <h3>Building From Home</h3>
-                    <p>
-                        From Makurdi to the world, we're building a new chapter in African music.
-                    </p>
-                </div>
-            </article>
-
-        </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section class="contact" id="contact">
-
-        <div class="eyebrow">Let's Work Together</div>
-
-        <h2>MAKE IT <span>LEGACY.</span></h2>
 
         <p>
-            For artist submissions, bookings, partnerships, media enquiries
-            and business opportunities, get in touch with Leshky Records.
+            Building artists, creating timeless music and turning sound
+            into a legacy that lasts for generations.
         </p>
 
-        <a href="mailto:contact@leshkyrecords.com" class="btn btn-primary">
-            Contact Leshky Records
-        </a>
+        <div class="hero-buttons">
+            <a href="music.html" class="btn btn-primary">
+                Explore Music
+            </a>
 
-        <div class="contact-info">
-
-            <div>
-                <strong>LOCATION</strong>
-                Makurdi, Nigeria
-            </div>
-
-            <div>
-                <strong>EMAIL</strong>
-                contact@leshkyrecords.com
-            </div>
-
-            <div>
-                <strong>ARTIST SUBMISSIONS</strong>
-                Open Soon
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-
-        <div class="footer-top">
-
-            <div class="footer-brand">
-                <div class="logo">
-                    LESHKY <span>RECORDS</span>
-                    <small>SOUND TO LEGACY</small>
-                </div>
-
-                <p>
-                    Music. Culture. Talent. Legacy.
-                </p>
-            </div>
-
-            <div class="socials">
-                <a href="#" aria-label="Instagram">IG</a>
-                <a href="#" aria-label="Facebook">FB</a>
-                <a href="#" aria-label="TikTok">TK</a>
-                <a href="#" aria-label="YouTube">YT</a>
-            </div>
-
-        </div>
-
-        <div class="copyright">
-            © 2026 Leshky Records. All rights reserved.
-        </div>
-
-    </footer>
-
-    <!-- MUSIC PLAYER -->
-    <div class="player" id="player">
-
-        <button class="player-button" onclick="togglePlayer()" id="playerButton">
-            ▶
-        </button>
-
-        <div class="player-info">
-            <strong id="playerTitle">No song selected</strong>
-            <span id="playerArtist">Leshky Records</span>
-        </div>
-
-        <div class="progress">
-            <div class="progress-bar" id="progressBar"></div>
+            <a href="artists.html" class="btn btn-outline">
+                Meet Our Artists
+            </a>
         </div>
 
     </div>
 
-    <script>
-        /* MOBILE MENU */
-        function toggleMenu() {
-            document.getElementById("navLinks").classList.toggle("show");
-        }
+</section>
 
-        /* DEMO PLAYER */
-        let playing = false;
-        let progress = 0;
-        let progressTimer;
+<section class="section" id="about">
 
-        function playSong(title, artist) {
+    <div class="container">
 
-            document.getElementById("player").classList.add("active");
+        <div class="about-grid">
 
-            document.getElementById("playerTitle").textContent = title;
-            document.getElementById("playerArtist").textContent = artist;
+            <div class="about-image"></div>
 
-            playing = true;
+            <div class="about-content">
 
-            document.getElementById("playerButton").textContent = "❚❚";
+                <div class="section-title" style="text-align:left; margin-bottom:0;">
+                    <div class="eyebrow">Who We Are</div>
+                </div>
 
-            clearInterval(progressTimer);
+                <h2>
+                    <span data-site-name>Leshky Records</span>
+                    <br>
+                    Beyond Music.
+                </h2>
 
-            progress = 0;
+                <p>
+                    Leshky Records is an independent record label focused on
+                    discovering, developing and supporting talented artists.
+                    We believe great music deserves a platform, a story and
+                    a lasting legacy.
+                </p>
 
-            progressTimer = setInterval(function() {
+                <p>
+                    Based in
+                    <span data-site-location>
+                        Makurdi, Benue State, Nigeria
+                    </span>,
+                    we are building a new generation of African music and
+                    culture.
+                </p>
 
-                if (!playing) return;
+                <div class="about-list">
+                    <div>Artist Development</div>
+                    <div>Music Production</div>
+                    <div>Digital Distribution</div>
+                    <div>Brand & Creative Development</div>
+                </div>
 
-                progress += 1;
+            </div>
 
-                document.getElementById("progressBar").style.width =
-                    progress + "%";
+        </div>
 
-                if (progress >= 100) {
-                    clearInterval(progressTimer);
-                    playing = false;
-                    document.getElementById("playerButton").textContent = "▶";
-                }
-
-            }, 300);
-        }
-
-        function togglePlayer() {
-
-            if (playing) {
-                playing = false;
-                document.getElementById("playerButton").textContent = "▶";
-            } else {
-                playing = true;
-                document.getElementById("playerButton").textContent = "❚❚";
-            }
-        }
-
-        /* DEMO DOWNLOAD */
-        function downloadDemo() {
-            alert(
-                "The download system will be connected when we add the music database and audio storage."
-            );
-        }
-    </script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-const SUPABASE_URL = "https://dcjeqalpzuewlholdbqc.supabase.co";
-const SUPABASE_KEY = "sb_publishable_LZkkwMKMxbEMi3hKY-op4g_gHSQO529";
-
-const { createClient } = supabase;
-const client = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-async function loadFeaturedMusic() {
-
-  const { data: songs, error } = await client
-    .from("songs")
-    .select(`
-      *,
-      artists (
-        name
-      ),
-      albums (
-        title,
-        type
-      )
-    `)
-    .eq("featured", true)
-    .order("created_at", { ascending: false })
-    .limit(6);
-
-  if (error) {
-    console.error("Error loading featured music:", error);
-    return;
-  }
-
-  console.log("Featured music loaded:", songs);
-  console.log("Number of featured songs:", songs.length);  
-
-  const featuredContainer =
-  document.getElementById("featuredMusic");
-
-featuredContainer.innerHTML = "";
-
-songs.forEach(song => {
-
-  const card = document.createElement("div");
-
-  card.style.cssText = `
-    background:#111;
-    border:1px solid #333;
-    padding:20px;
-    border-radius:12px;
-  `;
-
-  const cover =
-    song.cover_url ||
-    "https://via.placeholder.com/500x500?text=Leshky+Records";
-
-  const artistName =
-    song.artists?.name || "Unknown Artist";
-
-  const albumName =
-    song.albums?.title || "Single";
-
-  card.innerHTML = `
-    <img
-      src="${cover}"
-      alt="${song.title}"
-      style="
-        width:100%;
-        aspect-ratio:1;
-        object-fit:cover;
-        border-radius:10px;
-      "
-    >
-
-    <h3 style="margin:15px 0 5px;">
-      ${song.title}
-    </h3>
-
-    <p>${artistName}</p>
-
-    <p style="opacity:.7;">
-      ${albumName}
-    </p>
-
-    <audio
-      controls
-      style="width:100%;"
-      src="${song.audio_url}">
-    </audio>
-  `;
-
-  featuredContainer.appendChild(card);
-
-});  
-}
-
-loadFeaturedMusic();
-</script>    
-
-<section style="padding:60px 20px;">
-
-  <h2 style="text-align:center;">
-    Featured <span style="color:#d4af37;">Music</span>
-  </h2>
-
-  <div
-    id="featuredMusic"
-    style="
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:25px;
-      max-width:1100px;
-      margin:30px auto;
-    ">
-  </div>
+    </div>
 
 </section>
 
+<section class="section">
+
+    <div class="container">
+
+        <div class="section-title">
+            <div class="eyebrow">Discover</div>
+            <h2>Our World</h2>
+            <p>
+                Explore the artists, music and stories behind
+                Leshky Records.
+            </p>
+        </div>
+
+        <div class="cards">
+
+            <a href="artists.html" class="card">
+                <div class="card-image"></div>
+                <div class="card-content">
+                    <h3>Artists</h3>
+                    <p>Meet the talented voices shaping our sound.</p>
+                </div>
+            </a>
+
+            <a href="music.html" class="card">
+                <div class="card-image"></div>
+                <div class="card-content">
+                    <h3>Music</h3>
+                    <p>Listen to our latest releases and sounds.</p>
+                </div>
+            </a>
+
+            <a href="news.html" class="card">
+                <div class="card-image"></div>
+                <div class="card-content">
+                    <h3>News</h3>
+                    <p>Stay updated with Leshky Records.</p>
+                </div>
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="section" id="featured-music">
+
+    <div class="container">
+
+        <div class="section-title">
+            <div class="eyebrow">Latest Sounds</div>
+            <h2>Featured Music</h2>
+            <p>
+                Listen to the latest releases from Leshky Records.
+            </p>
+        </div>
+
+        <div id="featuredMusicGrid" class="cards">
+            <div class="card">
+                <div class="card-content">
+                    <h3>Loading music...</h3>
+                    <p>Please wait while we load our latest releases.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center; margin-top:35px;">
+            <a href="music.html" class="btn btn-outline">
+                View All Music
+            </a>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="section-title">
+            <div class="eyebrow">Stay Connected</div>
+            <h2>Build The Legacy</h2>
+            <p>
+                Follow Leshky Records for new music, artists, events,
+                announcements and exclusive content.
+            </p>
+        </div>
+
+        <div style="
+            display:flex;
+            justify-content:center;
+            flex-wrap:wrap;
+            gap:15px;
+        ">
+
+            <a href="artists.html" class="btn btn-primary">
+                Our Artists
+            </a>
+
+            <a href="events.html" class="btn btn-outline">
+                Upcoming Events
+            </a>
+
+            <a href="contact.html" class="btn btn-outline">
+                Contact Us
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="section-title">
+            <div class="eyebrow">Get In Touch</div>
+            <h2>Work With Us</h2>
+
+            <p>
+                For bookings, collaborations, artist enquiries,
+                media and business opportunities, contact the Leshky
+                Records team.
+            </p>
+        </div>
+
+        <div style="
+            max-width:700px;
+            margin:0 auto;
+            text-align:center;
+        ">
+
+            <p style="color:#aaa; margin-bottom:25px;">
+                <span data-site-location>
+                    Makurdi, Benue State, Nigeria
+                </span>
+            </p>
+
+            <a
+                href="mailto:contact@leshkyrecords.com"
+                class="btn btn-primary"
+                data-site-email-link
+            >
+                <span data-site-email>
+                    contact@leshkyrecords.com
+                </span>
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+    <div class="container">
+
+        <div class="footer-grid">
+
+            <div>
+
+                <a href="#home" class="logo">
+                    <span data-site-name>
+                        LESHKY RECORDS
+                    </span>
+
+                    <small data-site-slogan>
+                        SOUND TO LEGACY
+                    </small>
+                </a>
+
+                <p style="margin-top:20px; max-width:350px;">
+                    An independent record label building artists,
+                    creating timeless music and turning sound into
+                    a lasting legacy.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <div class="footer-title">
+                    Explore
+                </div>
+
+                <div class="footer-links">
+
+                    <a href="artists.html">
+                        Artists
+                    </a>
+
+                    <a href="music.html">
+                        Music
+                    </a>
+
+                    <a href="news.html">
+                        News
+                    </a>
+
+                    <a href="events.html">
+                        Events
+                    </a>
+
+                    <a href="media.html">
+                        Media
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <div class="footer-title">
+                    Contact
+                </div>
+
+                <div class="footer-links">
+
+                    <a href="contact.html">
+                        Contact Us
+                    </a>
+
+                    <a
+                        href="mailto:contact@leshkyrecords.com"
+                        data-site-email-link
+                    >
+                        <span data-site-email>
+                            contact@leshkyrecords.com
+                        </span>
+                    </a>
+
+                    <span data-site-location>
+                        Makurdi, Benue State, Nigeria
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © <span id="copyrightYear"></span>
+
+            <span data-site-name>
+                Leshky Records
+            </span>.
+
+            All rights reserved.
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
 <script>
-const SUPABASE_URL = "https://dcjeqalpzuewlholdbqc.supabase.co";
-const SUPABASE_KEY = "sb_publishable_LZkkwMKMxbEMi3hKY-op4g_gHSQO529";
+    /* MOBILE MENU */
 
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
 
-async function loadSiteSettings() {
-  const { data, error } = await supabaseClient
-    .from("site_settings")
-    .select("*")
-    .order("created_at", { ascending: true })
-    .limit(1)
-    .maybeSingle();
+    if (menuToggle && navLinks) {
 
-  if (error || !data) {
-    console.log("Could not load site settings:", error);
-    return;
-  }
+        menuToggle.addEventListener("click", function () {
+            navLinks.classList.toggle("active");
+        });
 
-  document.querySelectorAll("[data-site-name]").forEach(el => {
-    el.textContent = data.site_name || "Leshky Records";
-  });
+        navLinks.querySelectorAll("a").forEach(function (link) {
 
-  document.querySelectorAll("[data-site-slogan]").forEach(el => {
-    el.textContent = data.slogan || "SOUND TO LEGACY";
-  });
+            link.addEventListener("click", function () {
+                navLinks.classList.remove("active");
+            });
 
-  document.querySelectorAll("[data-site-location]").forEach(el => {
-    el.textContent = data.location || "";
-  });
+        });
 
-  document.querySelectorAll("[data-site-email]").forEach(el => {
-    el.textContent = data.email || "";
-    if (el.tagName === "A" && data.email) {
-      el.href = "mailto:" + data.email;
     }
-  });
 
-  document.querySelectorAll("[data-site-phone]").forEach(el => {
-    el.textContent = data.phone || "";
-    if (el.tagName === "A" && data.phone) {
-      el.href = "tel:" + data.phone;
+
+    /* COPYRIGHT YEAR */
+
+    const copyrightYear = document.getElementById("copyrightYear");
+
+    if (copyrightYear) {
+        copyrightYear.textContent = new Date().getFullYear();
     }
-  });
-}
-
-loadSiteSettings();
 </script>
 
+
 <script>
-async function updateSiteName() {
-  const { data, error } = await supabaseClient
-    .from("site_settings")
-    .select("site_name")
-    .limit(1)
-    .maybeSingle();
+    /* SUPABASE */
 
-  if (error) {
-    console.log(error);
-    return;
-  }
+    const SUPABASE_URL =
+        "https://dcjeqalpzuewlholdbqc.supabase.co";
 
-  if (data && data.site_name) {
-    document.getElementById("siteName").textContent = data.site_name;
-  }
-}
+    const SUPABASE_KEY =
+        "sb_publishable_LZkkwMKMxbEMi3hKY-op4g_gHSQO529";
 
-updateSiteName();
-</script>    
-    
+    const client =
+        supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+
+    /* FEATURED MUSIC */
+
+    async function loadFeaturedMusic() {
+
+        const grid =
+            document.getElementById("featuredMusicGrid");
+
+        if (!grid) {
+            return;
+        }
+
+        const { data, error } =
+            await client
+                .from("songs")
+                .select("*")
+                .order("created_at", {
+                    ascending: false
+                })
+                .limit(3);
+
+
+        if (error) {
+
+            console.error(
+                "Featured music error:",
+                error
+            );
+
+            grid.innerHTML = `
+                <div class="card">
+                    <div class="card-content">
+                        <h3>Music unavailable</h3>
+                        <p>
+                            Please check back soon for our
+                            latest releases.
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        if (!data || data.length === 0) {
+
+            grid.innerHTML = `
+                <div class="card">
+                    <div class="card-content">
+                        <h3>No releases yet</h3>
+                        <p>
+                            New music will appear here soon.
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        grid.innerHTML = "";
+
+
+        data.forEach(function (song) {
+
+            const card =
+                document.createElement("div");
+
+            card.className = "card";
+
+
+            let cover =
+                song.cover_url ||
+                song.cover ||
+                "";
+
+
+            let audio =
+                song.audio_url ||
+                song.music_url ||
+                song.file_url ||
+                "";
+
+
+            card.innerHTML = `
+
+                <div class="card-image">
+
+                    ${
+                        cover
+                        ?
+                        `<img
+                            src="${cover}"
+                            alt="${song.title || "Song"}"
+                        >`
+                        :
+                        ""
+                    }
+
+                </div>
+
+
+                <div class="card-content">
+
+                    <h3>
+                        ${song.title || "Untitled"}
+                    </h3>
+
+                    <p>
+                        ${song.artist || "Leshky Records"}
+                    </p>
+
+
+                    ${
+                        audio
+                        ?
+                        `
+                        <audio
+                            controls
+                            preload="none"
+                            style="
+                                width:100%;
+                                margin-top:15px;
+                            "
+                        >
+                            <source src="${audio}">
+                            Your browser does not support audio.
+                        </audio>
+                        `
+                        :
+                        ""
+                    }
+
+                </div>
+
+            `;
+
+
+            grid.appendChild(card);
+
+        });
+
+    }
+
+
+    loadFeaturedMusic();
+</script>
+
+
+<script>
+    /* SITE SETTINGS */
+
+    const supabaseClient =
+        supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+
+    async function loadSiteSettings() {
+
+        const { data, error } =
+            await supabaseClient
+                .from("site_settings")
+                .select("*")
+                .order("created_at", {
+                    ascending: false
+                })
+                .limit(1)
+                .maybeSingle();
+
+
+        if (error) {
+
+            console.error(
+                "Site settings error:",
+                error
+            );
+
+            return;
+        }
+
+
+        if (!data) {
+
+            console.log(
+                "No site settings found."
+            );
+
+            return;
+        }
+
+
+        /* SITE NAME */
+
+        document
+            .querySelectorAll("[data-site-name]")
+            .forEach(function (el) {
+
+                el.textContent =
+                    data.site_name ||
+                    "Leshky Records";
+
+            });
+
+
+        /* SLOGAN */
+
+        document
+            .querySelectorAll("[data-site-slogan]")
+            .forEach(function (el) {
+
+                el.textContent =
+                    data.slogan ||
+                    "SOUND TO LEGACY";
+
+            });
+
+
+        /* LOCATION */
+
+        document
+            .querySelectorAll("[data-site-location]")
+            .forEach(function (el) {
+
+                el.textContent =
+                    data.location ||
+                    "Makurdi, Benue State, Nigeria";
+
+            });
+
+
+        /* EMAIL */
+
+        document
+            .querySelectorAll("[data-site-email]")
+            .forEach(function (el) {
+
+                el.textContent =
+                    data.email ||
+                    "contact@leshkyrecords.com";
+
+            });
+
+
+        /* EMAIL LINK */
+
+        const emailLink =
+            document.querySelector(
+                "[data-site-email-link]"
+            );
+
+
+        if (
+            emailLink &&
+            data.email
+        ) {
+
+            emailLink.href =
+                "mailto:" + data.email;
+
+        }
+
+
+        console.log(
+            "Site settings loaded:",
+            data
+        );
+
+    }
+
+
+    loadSiteSettings();
+
+</script>
+
 </body>
 </html>
-```
